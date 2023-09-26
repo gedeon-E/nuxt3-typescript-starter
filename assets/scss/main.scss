@@ -1,0 +1,65 @@
+@import "font.scss";
+@import "vuetify-overide.scss";
+@import "mixins.scss";
+
+* {
+  font-family: 'Century Gothic';
+  font-size: $text-size;
+  letter-spacing: 0.02em;
+}
+
+w-100 {
+  width: 100% !important;
+}
+
+.page-full-container{
+  margin: 40px auto;
+  max-width: 1800px;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.page-mini-container {
+  max-width: 800px;
+  margin: 40px auto;
+}
+@media (min-width: 1200px) {
+  .page-full-container, .page-container, .page-mini-container{
+    padding: 0px 100px;
+  }
+}
+.max-w-1200 {
+  max-width: 1200px;
+}
+
+.max-w-800 {
+  max-width: 800px;
+}
+
+.max-w-500 {
+  max-width: 500px;
+}
+
+
+.radius-20 {
+  border-radius: 20px !important;
+}
+
+input {
+  font-size: $text-size !important;
+}
+
+input:read-only:not([type="checkbox"]) {
+  cursor: not-allowed !important;
+}
+
+.text-muted {
+  color: rgba(0,0,0, .5);
+}
+
+.text-muted-light {
+  color: rgba(255,255,255, .8);
+}

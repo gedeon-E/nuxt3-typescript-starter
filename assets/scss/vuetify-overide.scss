@@ -1,0 +1,29 @@
+$tooltip-font-size: $text-size;
+
+.v-input--readonly .v-field__input {
+  cursor: not-allowed !important;
+}
+
+.v-card.elevation-0.v-theme--light:not(.no-card-border) {
+  border: 1px solid #eee;
+}
+
+.v-field--variant-solo-filled .v-field__overlay {
+  background-color: $bg-input !important;
+  opacity: 1 !important;
+}
+
+.v-list-item-title {
+  color: $text-color;
+  font-size: $text-size !important;
+  letter-spacing: 0.02em;
+}
+
+.v-btn .v-btn__content span {
+  font-size: $text-size;
+  letter-spacing: 0;
+}
+
+.v-label {
+  font-size: $text-size !important;
+}
