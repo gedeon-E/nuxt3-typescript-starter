@@ -1,0 +1,103 @@
+<template>
+  <CommonDialog
+    v-model="dialog"
+    :title="dialogTitle"
+    :submit="onSubmit"
+    :action-loading="actionLoading"
+    width="400"
+    action-text="Confirmer"
+  >
+    <Form
+      ref="form"
+      :validation-schema="formSchema"
+      :initial-values="initialValues"
+      @submit="onSubmit"
+    >
+      <DynamicFields :fields="fields" />
+    </Form>
+  </CommonDialog>
+</template>
+
+<script setup>
+import { object, string } from 'yup'
+import { Form } from 'vee-validate'
+import { useSnackbarStore } from '@/stores/snackbar'
+import { useRoleStore } from '@/stores/role'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+
+const snackbarStore = useSnackbarStore()
+const roleStore = useRoleStore()
+const userStore = useUserStore()
+const { loading: roleLoading, roles } = storeToRefs(roleStore)
+
+const props = defineProps({
+  modelValue: Boolean,
+  action: { type: String, default: '' },
+  entity: { type: Object, default: () => ({}) }
+})
+const emit = defineEmits(['update:modelValue', 'created', 'updated'])
+
+const { showErrorSnackbar } = snackbarStore
+const { fetchRoles } = roleStore
+const { updateUser, storeUser } = userStore
+
+const form = ref(null)
+const actionLoading = ref(false)
+
+const dialogTitle = computed(() => (props.action === 'create' ? 'Création d\'un utilisateur' : 'Modifier l\' utilisateur'))
+const dialog = computed({
+  get () {
+    return props.modelValue
+  },
+  set (value) {
+    emit('update:modelValue', value)
+  }
+})
+const initialValues = computed(() => {
+  if (props.action === 'update') {
+    return props.entity || {}
+  }
+  return {}
+})
+
+const fields = computed(() => [
+  { name: 'email', placeholder: 'Veuillez entre l\' email', label: 'Email', type: 'text' },
+  {
+    name: 'roles',
+    placeholder: 'Veuillez sélectionner les roles',
+    label: 'Roles',
+    type: 'select-multiple',
+    items: roles.value,
+    loading: roleLoading.value
+  }
+])
+
+const formSchema = object({
+  email: string()
+    .max(255)
+    .required('Veuillez renseigner l\'e-mail')
+    .email('Veuillez renseigner un email valide')
+})
+
+async function onSubmit () {
+  const { valid } = await form.value.validate()
+  if (valid) {
+    actionLoading.value = true
+    if (props.action === 'create') {
+      await storeUser(form.value.getValues())
+      emit('created')
+    } else if (props.action === 'update') {
+      await updateUser(form.value.getValues())
+      emit('updated')
+    }
+    actionLoading.value = false
+    form.value.resetForm()
+    dialog.value = false
+  } else {
+    showErrorSnackbar('Formulaire incorrect')
+  }
+}
+
+fetchRoles()
+</script>

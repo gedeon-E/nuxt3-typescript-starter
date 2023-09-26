@@ -36,6 +36,7 @@
     "@vee-validate/nuxt": "^4.11.7",
     "@vee-validate/yup": "^4.11.7",
     "@vuepic/vue-datepicker": "^6.1.0",
+    "date-fns": "^2.30.0",
     "pinia": "^2.1.6",
     "sass": "^1.68.0",
     "vuetify": "^3.3.17",

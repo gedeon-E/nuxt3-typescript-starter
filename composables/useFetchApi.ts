@@ -1,7 +1,8 @@
 import { useSnackbarStore } from '@/stores/snackbar'
 
-// eslint-disable-next-line import/prefer-default-export
-export const useFetchApi = (requestUrl: string, opts: any) => {
+// eslint-disable-next-line max-len
+// eslint-disable-next-line import/prefer-default-export, max-len, @typescript-eslint/no-explicit-any
+export const useFetchApi = (requestUrl: string, opts: any): Promise<{ data: any, error: any, status: any }> => {
   const config = useRuntimeConfig()
   const { token, signOut } = useAuth()
 

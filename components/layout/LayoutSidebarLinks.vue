@@ -10,7 +10,9 @@
             <template v-for="(item, index) in menuItem.items" :key="item.text">
               <template
                 v-if="
-                  userHasOneOfPermissions(item.subItems?.flatMap(subItem => subItem?.permissions || []))"
+                  userHasOneOfPermissions(
+                    item.subItems?.flatMap(subItem => subItem?.permissions || [])
+                  )"
               >
                 <v-list-group :value="index">
                   <template #activator="{ props }">
@@ -96,7 +98,7 @@ const groupedMenuItems = [
       {
         text: 'Accueil',
         icon: 'mdi-view-dashboard',
-        to: '/'
+        to: '/admin'
       }
     ]
   },

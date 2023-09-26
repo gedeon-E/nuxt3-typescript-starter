@@ -1,19 +1,21 @@
 <template>
-  <div class="admin-layout-container">
-    <LayoutSidebar>
-      <div>
-        <LayoutHeader />
-      </div>
-      <div>
-        <CommonBreadcrumb />
-        <div class="mt-3">
-          <slot />
+  <div>
+    <div class="admin-layout-container">
+      <LayoutSidebar>
+        <div>
+          <LayoutHeader />
         </div>
-      </div>
-    </LayoutSidebar>
-  </div>
+        <div>
+          <CommonBreadcrumb />
+          <div class="mt-3">
+            <slot />
+          </div>
+        </div>
+      </LayoutSidebar>
+    </div>
 
-  <CommonSnackbar />
+    <CommonSnackbar />
+  </div>
 </template>
 
 <style lang="scss">
