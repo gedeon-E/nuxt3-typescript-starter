@@ -8,12 +8,12 @@ export const useSnackbarStore = defineStore('snackbar', {
     visible: false
   }),
   actions: {
-    showSuccessSnackbar (message) {
+    showSuccessSnackbar (message: string) {
       this.message = message
       this.type = 'success'
       this.visible = true
     },
-    showErrorSnackbar (message) {
+    showErrorSnackbar (message: string) {
       this.message = message
       this.type = 'red'
       this.visible = true

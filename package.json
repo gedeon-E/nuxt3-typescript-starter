@@ -27,7 +27,8 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.17.0",
     "nuxt": "^3.7.3",
-    "typescript": "*"
+    "typescript": "*",
+    "vue-tsc": "^1.8.14"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",

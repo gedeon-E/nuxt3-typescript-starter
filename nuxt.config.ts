@@ -31,8 +31,8 @@ export default defineNuxtConfig({
           light: {
             dark: false,
             colors: {
-              primary: '#5e5ac8',
-              secondary: '#63f60e'
+              primary: '#2196f3',
+              secondary: '#ffc107'
             }
           }
         }
@@ -47,7 +47,7 @@ export default defineNuxtConfig({
         login: '/login'
       },
       endpoints: {
-        signIn: { path: '/sign', method: 'post' },
+        signIn: { path: '/check-otp', method: 'post' },
         // signOut: { path: '/logout', method: 'post' },
         getSession: { path: '/user', method: 'get' }
       },
@@ -60,5 +60,9 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['@vuepic/vue-datepicker']
+  },
+  typescript: {
+    strict: true,
+    typeCheck: true
   }
 })
