@@ -4,7 +4,13 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
-Make sure to install the dependencies:
+- Create .env:
+
+`cp .env.example .env`
+
+- Updates variables
+
+- Make sure to install the dependencies:
 
 ```bash
 # npm
@@ -73,3 +79,9 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## DOCKER
+
+- Create image `docker build . -t nuxt3-ts-strater`
+
+- Run container `docker run -p 3000:80 -d nuxt3-ts-strater`
