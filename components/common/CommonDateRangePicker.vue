@@ -15,14 +15,14 @@
   />
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { fr } from 'date-fns/locale'
 
 const props = defineProps({
-  modelValue: { type: Array, default: () => ([]) }
+  modelValue: { type: Array<string>, default: () => ([]) }
 })
 
 const emit = defineEmits(['update:modelValue'])

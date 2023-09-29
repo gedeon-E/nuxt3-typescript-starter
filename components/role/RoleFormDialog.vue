@@ -18,11 +18,12 @@
   </CommonDialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useRoleStore } from '@/stores/role'
+import { RoleI } from '~/types/role'
 
 const snackbarStore = useSnackbarStore()
 const roleStore = useRoleStore()
@@ -30,14 +31,14 @@ const roleStore = useRoleStore()
 const props = defineProps({
   modelValue: Boolean,
   action: { type: String, default: '' },
-  entity: { type: Object, default: () => ({}) }
+  entity: { type: Object as PropType<RoleI>, default: () => ({}) }
 })
 const emit = defineEmits(['update:modelValue'])
 
 const { showErrorSnackbar } = snackbarStore
 const { updateRole, storeRole } = roleStore
 
-const form = ref(null)
+const form = ref<typeof Form>()
 const actionLoading = ref(false)
 
 const dialogTitle = computed(() => (props.action === 'create' ? 'Création de role' : 'Modifier le role'))
@@ -66,19 +67,21 @@ const formSchema = object({
 })
 
 async function onSubmit () {
-  const { valid } = await form.value.validate()
-  if (valid) {
-    actionLoading.value = true
-    if (props.action === 'create') {
-      await storeRole(form.value.getValues())
-    } else if (props.action === 'update') {
-      await updateRole(form.value.getValues())
+  if (form.value) {
+    const { valid } = await form.value.validate()
+    if (valid) {
+      actionLoading.value = true
+      if (props.action === 'create') {
+        await storeRole(form.value.getValues())
+      } else if (props.action === 'update') {
+        await updateRole(form.value.getValues())
+      }
+      actionLoading.value = false
+      form.value.resetForm()
+      dialog.value = false
+    } else {
+      showErrorSnackbar('Formulaire incorrect')
     }
-    actionLoading.value = false
-    form.value.resetForm()
-    dialog.value = false
-  } else {
-    showErrorSnackbar('Formulaire incorrect')
   }
 }
 </script>

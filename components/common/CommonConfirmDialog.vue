@@ -12,7 +12,7 @@
   </CommonDialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const props = defineProps({
   modelValue: Boolean,
   text: { type: String, default: '' }

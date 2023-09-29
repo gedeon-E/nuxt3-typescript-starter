@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useSnackbarStore } from '@/stores/snackbar'
+import { HttpPaginationResponseI } from '~/types/http'
 import { UserI } from '../types/user'
 
 // eslint-disable-next-line import/prefer-default-export
@@ -22,7 +23,8 @@ export const useUserStore = defineStore('user', {
         })
       })
     },
-    fetchUsersWithPagination ({ page, limit }: { page: number, limit: number }) {
+    // eslint-disable-next-line max-len
+    fetchUsersWithPagination ({ page, limit }: { page: number, limit: number }): Promise<HttpPaginationResponseI<UserI[]>> {
       return new Promise((resolve) => {
         useFetchApi('/users', {
           method: 'get',

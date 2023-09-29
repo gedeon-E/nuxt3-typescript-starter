@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useAdminBreadcrumbStore } from '@/stores/admin-breadcrumb'
 

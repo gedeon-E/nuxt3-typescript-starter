@@ -38,7 +38,7 @@
   </v-dialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const props = defineProps({
   modelValue: Boolean,
   width: { type: String, default: '600px' },

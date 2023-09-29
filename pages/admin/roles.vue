@@ -53,7 +53,7 @@
           v-model:items-per-page="itemsPerPage"
           v-model:expanded="expanded"
           v-model:page="page"
-          :headers="headers"
+          :headers="(headers as any)"
           :items="roles"
           :loading="roleLoading"
           items-per-page-text="Items par page"
@@ -104,7 +104,7 @@
     <RoleFormDialog
       v-model="roleFormDialogVisible"
       :action="roleFormDialogAction"
-      :entity="selectedRole"
+      :entity="selectedRole || undefined"
     />
     <template v-if="selectedRole">
       <RolePermissionsFormDialog
@@ -120,15 +120,16 @@
   </div>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import { storeToRefs } from 'pinia'
 import { useRoleStore } from '@/stores/role'
 import { shouldHaveOneOfPermissions, userHasOneOfPermissions } from '@/utilities/auth.util'
+import { RoleI } from '~/types/role'
 
 definePageMeta({
   layout: 'admin',
-  middleware: [() => shouldHaveOneOfPermissions(['ROLE:READ'])]
+  middleware: [(_, __, next) => shouldHaveOneOfPermissions({ next, permissions: ['ROLE:READ'] })]
 })
 
 const roleStore = useRoleStore()
@@ -143,9 +144,9 @@ useAdminBreadcrumb('mdi-security', [{
 const expanded = ref([])
 const itemsPerPage = ref(10)
 const page = ref(1)
-const selectedRoles = ref([])
+const selectedRoles = ref<RoleI[]>([])
 const roleFormDialogVisible = ref(false)
-const roleFormDialogAction = ref(null)
+const roleFormDialogAction = ref<string | undefined>(undefined)
 const confirmDialogVisible = ref(false)
 const deletionInLoading = ref(false)
 const rolePermissionsDialogVisible = ref(false)
@@ -154,13 +155,13 @@ const textConfirmDeletion = computed(
   () => `Voulez-vous vraiment supprimer le role <strong>"${selectedRole.value?.name}"</strong> ?`
 )
 
-const selectedRole = computed(
+const selectedRole = computed<RoleI | null>(
   () => (selectedRoles.value.length > 0 ? selectedRoles.value[0] : null)
 )
 
 watch(roles, (newRoles) => {
   if (selectedRole.value) {
-    const freshRole = newRoles.find(role => role.id === selectedRole.value.id)
+    const freshRole = newRoles.find(role => role.id === selectedRole.value?.id)
     selectedRoles.value = freshRole ? [freshRole] : []
   }
 })
@@ -195,9 +196,11 @@ function onDeleteRole () {
 }
 
 async function onConfirmDeletion () {
-  deletionInLoading.value = true
-  await deleteRole(selectedRole.value.id)
-  deletionInLoading.value = false
+  if (selectedRole.value) {
+    deletionInLoading.value = true
+    await deleteRole(selectedRole.value.id)
+    deletionInLoading.value = false
+  }
 }
 
 function onUpdatePermissions () {

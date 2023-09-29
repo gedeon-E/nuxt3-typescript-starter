@@ -54,7 +54,7 @@
   </v-dialog>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import { useField } from 'vee-validate'
 import { string } from 'yup'
 import { useSnackbarStore } from '@/stores/snackbar'
@@ -70,7 +70,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 const loading = ref(false)
-const otp = ref(null)
+const otp = ref<string | undefined>(undefined)
 const { showErrorSnackbar, showSuccessSnackbar } = snackbarStore
 
 const { value: otpFieldValue, meta: otpFieldMeta } = useField('', string()

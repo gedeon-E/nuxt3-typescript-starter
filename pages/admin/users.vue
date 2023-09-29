@@ -42,7 +42,7 @@
           v-model:items-per-page="itemsPerPage"
           v-model:page="page"
           :items-length="totalItems"
-          :headers="headers"
+          :headers="(headers as any)"
           :items="users"
           :loading="usersLoading"
           items-per-page-text="Items par page"
@@ -69,7 +69,7 @@
     <UserFormDialog
       v-model="userFormDialogVisible"
       :action="userFormDialogAction"
-      :entity="selectedUser"
+      :entity="selectedUser || undefined"
       @created="refreshUsers()"
       @updated="refreshUsers()"
     />
@@ -81,14 +81,16 @@
   </div>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import { useUserStore } from '@/stores/user'
 import { shouldHaveOneOfPermissions, userHasOneOfPermissions } from '@/utilities/auth.util'
+import { UserI } from '~/types/user'
 
 definePageMeta({
   layout: 'admin',
-  middleware: [() => shouldHaveOneOfPermissions(['USER:READ'])]
+  middleware: [(_, __, next) => shouldHaveOneOfPermissions({ next, permissions: ['USER:READ'] })]
+
 })
 
 useAdminBreadcrumb('mdi-account-group', [{
@@ -102,10 +104,10 @@ const { fetchUsersWithPagination, deleteUser } = userStore
 const itemsPerPage = ref(10)
 const page = ref(1)
 const selectedUsers = ref([])
-const users = ref([])
+const users = ref<UserI[]>([])
 const totalItems = ref(0)
 const userFormDialogVisible = ref(false)
-const userFormDialogAction = ref(null)
+const userFormDialogAction = ref<string | undefined>(undefined)
 const confirmDialogVisible = ref(false)
 const deletionInLoading = ref(false)
 const usersLoading = ref(false)
@@ -114,7 +116,7 @@ const textConfirmDeletion = computed(
   () => `Voulez-vous vraiment supprimer l'utilisateur <strong>"${selectedUser.value?.email}"</strong> ?`
 )
 
-const selectedUser = computed(
+const selectedUser = computed<UserI | null>(
   () => (selectedUsers.value.length > 0 ? selectedUsers.value[0] : null)
 )
 
@@ -150,10 +152,12 @@ function onDeleteUser () {
 }
 
 async function onConfirmDeletion () {
-  deletionInLoading.value = true
-  await deleteUser(selectedUser.value.id)
-  refreshUsers()
-  deletionInLoading.value = false
+  if (selectedUser.value) {
+    deletionInLoading.value = true
+    await deleteUser(selectedUser.value.id)
+    refreshUsers()
+    deletionInLoading.value = false
+  }
 }
 
 function refreshUsers () {
@@ -163,7 +167,7 @@ function refreshUsers () {
   })
 }
 
-async function loadUsers (payload) {
+async function loadUsers (payload: { page: number, itemsPerPage: number }) {
   usersLoading.value = true
   const { data, total } = await fetchUsersWithPagination(
     { page: payload.page, limit: payload.itemsPerPage }

@@ -20,7 +20,7 @@
   </v-snackbar>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useSnackbarStore } from '@/stores/snackbar'
 

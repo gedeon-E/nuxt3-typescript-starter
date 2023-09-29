@@ -7,7 +7,7 @@
 
     <hr>
 
-    <Form class="mt-10" :validation-schema="loginSchema" @submit="onSubmit">
+    <Form class="mt-10" :validation-schema="loginSchema" @submit="(onSubmit as any)">
       <p class="mb-6">
         Veuillez renseigner vos identifiants pour vous connectez
       </p>
@@ -53,7 +53,6 @@
         type="submit"
         block
         rounded
-        @click="dialog = false"
       >
         <span class="text-none" style="letter-spacing: 0;">Se connecter</span>
       </v-btn>
@@ -63,11 +62,16 @@
   <LoginOtpDialog v-model="showOtpForm" :email="email" />
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import { Form, Field } from 'vee-validate'
 import { object, string } from 'yup'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useAuthStore } from '@/stores/auth'
+
+interface FormValueI {
+  email: string;
+  password: string;
+}
 
 const authStore = useAuthStore()
 const snackbarStore = useSnackbarStore()
@@ -85,7 +89,7 @@ const loginSchema = object({
   password: string().required('Veuillez renseigner un mot de passe')
 })
 
-function onSubmit (values) {
+function onSubmit (values: FormValueI) {
   authStore.signin(values)
     .then(({ error }) => {
       loading.value = false

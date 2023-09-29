@@ -1,7 +1,7 @@
 <template>
   <template v-for="menuItem in groupedMenuItems" :key="menuItem.text">
     <div
-      v-if="userHasOneOfPermissions(menuItem.items?.flatMap(item => item?.permissions))"
+      v-if="userHasOneOfPermissions(menuItem.items?.flatMap(item => item?.permissions || []))"
     >
       <small class="ml-3">{{ menuItem.text }}</small>
       <v-card density="compact" class="mt-1 mb-3" rounded="xl" elevation="0">
@@ -11,7 +11,7 @@
               <template
                 v-if="
                   userHasOneOfPermissions(
-                    item.subItems?.flatMap(subItem => subItem?.permissions || [])
+                    item.subItems?.flatMap(subItem => subItem?.permissions || []) || []
                   )"
               >
                 <v-list-group :value="index">
@@ -40,7 +40,7 @@
                       :key="subItem.text"
                     >
                       <v-list-item
-                        v-if="userHasOneOfPermissions(subItem.permissions)"
+                        v-if="userHasOneOfPermissions(subItem?.permissions || [])"
                         :to="subItem.to"
                         append-icon="mdi-chevron-right"
                         color="primary"
@@ -86,12 +86,25 @@
   </div>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import { userHasOneOfPermissions } from '@/utilities/auth.util'
 
 const { signOut } = useAuth()
 
-const groupedMenuItems = [
+const groupedMenuItems: Array<{
+  text: string,
+  items: Array<{
+    text: string,
+    icon: string,
+    to?: string,
+    permissions?: string[],
+    subItems?: Array<{
+      text: string,
+      to: string,
+      permissions?: string[]
+    }>
+  }>
+}> = [
   {
     text: 'Menu',
     items: [

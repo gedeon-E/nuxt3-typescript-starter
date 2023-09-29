@@ -18,13 +18,14 @@
   </CommonDialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useRoleStore } from '@/stores/role'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
+import { UserI } from '~/types/user'
 
 const snackbarStore = useSnackbarStore()
 const roleStore = useRoleStore()
@@ -34,7 +35,7 @@ const { loading: roleLoading, roles } = storeToRefs(roleStore)
 const props = defineProps({
   modelValue: Boolean,
   action: { type: String, default: '' },
-  entity: { type: Object, default: () => ({}) }
+  entity: { type: Object as PropType<UserI>, default: () => ({}) }
 })
 const emit = defineEmits(['update:modelValue', 'created', 'updated'])
 
@@ -42,7 +43,7 @@ const { showErrorSnackbar } = snackbarStore
 const { fetchRoles } = roleStore
 const { updateUser, storeUser } = userStore
 
-const form = ref(null)
+const form = ref<typeof Form>()
 const actionLoading = ref(false)
 
 const dialogTitle = computed(() => (props.action === 'create' ? 'Création d\'un utilisateur' : 'Modifier l\' utilisateur'))
@@ -81,21 +82,23 @@ const formSchema = object({
 })
 
 async function onSubmit () {
-  const { valid } = await form.value.validate()
-  if (valid) {
-    actionLoading.value = true
-    if (props.action === 'create') {
-      await storeUser(form.value.getValues())
-      emit('created')
-    } else if (props.action === 'update') {
-      await updateUser(form.value.getValues())
-      emit('updated')
+  if (form.value) {
+    const { valid } = await form.value.validate()
+    if (valid) {
+      actionLoading.value = true
+      if (props.action === 'create') {
+        await storeUser(form.value.getValues())
+        emit('created')
+      } else if (props.action === 'update') {
+        await updateUser(form.value.getValues())
+        emit('updated')
+      }
+      actionLoading.value = false
+      form.value.resetForm()
+      dialog.value = false
+    } else {
+      showErrorSnackbar('Formulaire incorrect')
     }
-    actionLoading.value = false
-    form.value.resetForm()
-    dialog.value = false
-  } else {
-    showErrorSnackbar('Formulaire incorrect')
   }
 }
 

@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script type="ts" setup>
+<script lang="ts" setup>
 import slide1 from '~/assets/images/pic1.jpg'
 import slide2 from '~/assets/images/pic2.jpg'
 import slide3 from '~/assets/images/pic3.jpg'

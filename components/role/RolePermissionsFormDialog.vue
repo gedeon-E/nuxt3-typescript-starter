@@ -28,17 +28,19 @@
   </CommonDialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useRoleStore } from '@/stores/role'
 import { storeToRefs } from 'pinia'
 import { useRessourceStore } from '@/stores/ressource'
+import { PermissionI } from '~/types/permission'
+import { RoleI } from '~/types/role'
 
 const roleStore = useRoleStore()
 const ressourceStore = useRessourceStore()
 
 const props = defineProps({
   modelValue: Boolean,
-  role: { type: Object, required: true }
+  role: { type: Object as PropType<RoleI>, required: true }
 })
 const emit = defineEmits(['update:modelValue'])
 const { updatePermissions } = roleStore
@@ -46,10 +48,10 @@ const { ressources } = storeToRefs(ressourceStore)
 const { fetchRessources } = ressourceStore
 
 const actionLoading = ref(false)
-const permissions = ref(props.role?.permissions ?? [])
+const permissions = ref<PermissionI[]>(props.role?.permissions ?? [])
 
 watch(() => props.role, (newRole) => {
-  permissions.value = newRole.permissions
+  permissions.value = newRole.permissions || []
 })
 
 const dialog = computed({
@@ -68,7 +70,7 @@ async function onSubmit () {
   dialog.value = false
 }
 
-function togglePermission (permission) {
+function togglePermission (permission: PermissionI) {
   const index = permissions.value.findIndex(p => p.id === permission.id)
   if (index !== -1) {
     permissions.value.splice(index, 1)

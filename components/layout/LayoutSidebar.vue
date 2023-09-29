@@ -46,8 +46,11 @@
   </div>
 </template>
 
-<script type="ts" setup>
-const { data: currentUser } = useAuth()
+<script lang="ts" setup>
+import { UserI } from '~/types/user'
+
+const { data } = useAuth()
+const currentUser = data.value as UserI
 </script>
 
 <style lang="scss">
