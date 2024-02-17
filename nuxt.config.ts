@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         config.plugins.push(vuetify({ autoImport: true }))
       })
