@@ -74,11 +74,11 @@
                   Liste de permissions pour <strong>"{{ item.name }}"</strong>
                 </p>
 
-                <div v-if="!item.ressources.length" class="mt-2 mb-4">
+                <div v-if="item.ressources && !item.ressources.length" class="mt-2 mb-4">
                   <v-chip>Aucune permission affectée</v-chip>
                 </div>
                 <div
-                  v-for="ressource in item.ressources"
+                  v-for="ressource in (item.ressources || [])"
                   :key="ressource.id"
                   class="d-flex align-center"
                 >
