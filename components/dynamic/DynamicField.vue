@@ -1,5 +1,5 @@
 <template>
-  <Field v-slot="{ field, errorMessage }" :name="props.name">
+  <Field v-slot="{ handleChange, handleBlur, field, errorMessage }" :name="(props.name as string)">
     <DynamicFieldText
       v-if="['text', 'number', 'date'].includes(type)"
       v-model="field.value"
@@ -9,7 +9,41 @@
       :error-messages="errorMessage"
       :disabled="disabled"
       :hint="hint"
+      @update:model-value="onUpdateModelValue"
+    />
+    <DynamicFieldSwitcher
+      v-if="type === 'switcher'"
+      v-model="field.value"
+      v-bind="props"
+      :field="field"
+      :error-messages="errorMessage"
+      :disabled="disabled"
+      :hint="hint"
+      :handle-change="handleChange"
+      :handle-blur="handleBlur"
       @update:model-value="emit('update:modelValue', $event)"
+    />
+    <DynamicFieldTextArea
+      v-if="['textarea'].includes(type)"
+      v-model="field.value"
+      v-bind="props"
+      :field="field"
+      :type="type"
+      :error-messages="errorMessage"
+      :disabled="disabled"
+      :hint="hint"
+      @update:model-value="onUpdateModelValue"
+    />
+    <DynamicFieldPassword
+      v-if="['password'].includes(type)"
+      v-model="field.value"
+      v-bind="props"
+      :field="field"
+      :type="type"
+      :error-messages="errorMessage"
+      :disabled="disabled"
+      :hint="hint"
+      @update:model-value="onUpdateModelValue"
     />
     <DynamicFieldSelect
       v-if="['select', 'select-multiple'].includes(type)"
@@ -19,7 +53,7 @@
       :error-messages="errorMessage"
       :multiple="type === 'select-multiple'"
       :items="items"
-      @update:model-value="emit('update:modelValue', $event)"
+      @update:model-value="onUpdateModelValue"
     />
     <DynamicFieldAutocomplete
       v-if="type === 'autocomplete'"
@@ -27,34 +61,46 @@
       v-bind="props"
       :field="field"
       :error-messages="errorMessage"
-      :multiple="type === 'select-multiple'"
       :items="items"
-      @update:model-value="emit('update:modelValue', $event)"
+      @update:model-value="onUpdateModelValue"
+    />
+    <DynamicFieldCombobox
+      v-if="type === 'combobox'"
+      v-model="field.value"
+      v-bind="props"
+      :field="field"
+      :error-messages="errorMessage"
+      :items="items"
+      @update:model-value="onUpdateModelValue"
+    />
+    <DynamicFieldFile
+      v-if="['image', 'file'].includes(type)"
+      v-model="field.value"
+      v-bind="props"
+      :field="field"
+      :type="type"
+      :error-messages="errorMessage"
+      :disabled="disabled"
+      :hint="hint"
+      :handle-change="handleChange"
+      :handle-blur="handleBlur"
+      @update:model-value="onUpdateModelValue"
     />
   </Field>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Field } from 'vee-validate'
+import { dynamicFieldProps } from '@/types/dynamicField'
 
-const props = defineProps({
-  name: { type: String, required: true },
-  placeholder: { type: String, default: '' },
-  label: { type: String, default: '' },
-  type: { type: String, default: 'text' },
-  appendInnerIcon: { type: String, default: '' },
-  hint: { type: String, default: '' },
-  disabled: Boolean,
-  readOnly: { type: Boolean, default: false },
-  selectFilter: { type: Boolean, default: false },
-  items: { type: Array, default: () => ([]) },
-  itemTitle: { type: String, default: 'name' },
-  itemValue: { type: String, default: 'id' },
-  itemSubtitle: { type: String, default: null },
-  maxlength: { type: Number, default: null },
-  acceptNewValue: { type: Boolean, default: false },
-  counter: { type: Number, default: null }
-})
+const props = defineProps(dynamicFieldProps)
 
 const emit = defineEmits(['update:modelValue'])
+
+function onUpdateModelValue ($event: Event) {
+  emit('update:modelValue', $event)
+  if (props.onUpdateModelValue) {
+    props.onUpdateModelValue($event)
+  }
+}
 </script>

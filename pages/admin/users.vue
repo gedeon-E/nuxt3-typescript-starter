@@ -84,6 +84,7 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/stores/user'
 import { shouldHaveOneOfPermissions, userHasOneOfPermissions, PERMISSIONS } from '@/utilities/auth.util'
+import { FormActionE } from '~/types/form'
 import { UserI } from '~/types/user'
 
 definePageMeta({
@@ -112,7 +113,7 @@ const selectedUsers = ref([])
 const users = ref<UserI[]>([])
 const totalItems = ref(0)
 const userFormDialogVisible = ref(false)
-const userFormDialogAction = ref<string | undefined>(undefined)
+const userFormDialogAction = ref<FormActionE | undefined>(undefined)
 const confirmDialogVisible = ref(false)
 const deletionInLoading = ref(false)
 const usersLoading = ref(false)
@@ -143,12 +144,12 @@ const headers = [
 ]
 
 function onEditUser () {
-  userFormDialogAction.value = 'update'
+  userFormDialogAction.value = FormActionE.UPDATE
   userFormDialogVisible.value = true
 }
 
 function onAddUser () {
-  userFormDialogAction.value = 'create'
+  userFormDialogAction.value = FormActionE.CREATE
   userFormDialogVisible.value = true
 }
 

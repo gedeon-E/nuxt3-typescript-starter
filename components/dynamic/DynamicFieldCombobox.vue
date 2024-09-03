@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete
+  <v-combobox
     v-model="value"
     v-bind="field"
     :value="modelValue"
@@ -18,7 +18,6 @@
     rounded
     flat
     chips
-    @update:focused="onFocused($event)"
   >
     <template v-if="itemSubtitle" #item="{ props: autocompleteProps, item }">
       <v-list-item
@@ -28,7 +27,7 @@
         :subtitle="item?.raw[itemSubtitle]"
       />
     </template>
-  </v-autocomplete>
+  </v-combobox>
 </template>
 
 <script setup>
@@ -58,15 +57,5 @@ function customFilter (_, queryText, item) {
 
   return textOne.includes(searchText) ||
     textTwo.includes(searchText)
-}
-
-function onFocused (focused) {
-  if (
-    !props.acceptNewValue &&
-    !focused &&
-    !props.items.find(item => item[props.itemValue] === value.value)
-  ) {
-    value.value = null
-  }
 }
 </script>

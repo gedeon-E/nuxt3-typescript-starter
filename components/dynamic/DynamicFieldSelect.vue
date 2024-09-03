@@ -11,6 +11,7 @@
     :item-title="itemTitle"
     :item-value="itemValue"
     :readonly="readOnly"
+    :density="density"
     variant="solo-filled"
     chips
     rounded
@@ -32,22 +33,13 @@
 </template>
 
 <script setup>
+import { dynamicFieldSelectProps } from '@/types/dynamicField'
+
 const props = defineProps({
   modelValue: { type: [String, Array, Number, null], required: true, default: null },
-  multiple: Boolean,
-  name: { type: String, required: true },
-  placeholder: { type: String, default: '' },
-  label: { type: String, default: '' },
-  itemTitle: { type: String, default: 'name' },
-  itemValue: { type: String, default: 'id' },
-  itemSubtitle: { type: String, default: null },
   field: { type: Object, required: true },
-  readOnly: { type: Boolean, default: false },
-  selectFilter: { type: Boolean, default: false },
-  errorMessages: { type: [Array, String], default: () => ([]) },
-  items: { type: Array, default: () => ([]) }
+  ...dynamicFieldSelectProps
 })
-
 const emit = defineEmits(['update:modelValue'])
 
 const filter = ref('')

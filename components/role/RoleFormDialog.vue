@@ -24,13 +24,14 @@ import { Form } from 'vee-validate'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useRoleStore } from '@/stores/role'
 import { RoleI } from '~/types/role'
+import { FormActionE } from '~/types/form'
 
 const snackbarStore = useSnackbarStore()
 const roleStore = useRoleStore()
 
 const props = defineProps({
   modelValue: Boolean,
-  action: { type: String, default: '' },
+  action: { type: String as PropType<FormActionE>, default: '' },
   entity: { type: Object as PropType<RoleI>, default: () => ({}) }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -41,7 +42,7 @@ const { updateRole, storeRole } = roleStore
 const form = ref<typeof Form>()
 const actionLoading = ref(false)
 
-const dialogTitle = computed(() => (props.action === 'create' ? 'Création de role' : 'Modifier le role'))
+const dialogTitle = computed(() => (props.action === FormActionE.CREATE ? 'Création de role' : 'Modifier le role'))
 const dialog = computed({
   get () {
     return props.modelValue
@@ -51,7 +52,7 @@ const dialog = computed({
   }
 })
 const initialValues = computed(() => {
-  if (props.action === 'update') {
+  if (props.action === FormActionE.UPDATE) {
     return props.entity || {}
   }
   return {}

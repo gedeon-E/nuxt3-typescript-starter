@@ -126,6 +126,7 @@ import { useRoleStore } from '@/stores/role'
 import { shouldHaveOneOfPermissions, userHasOneOfPermissions, PERMISSIONS } from '@/utilities/auth.util'
 import { RoleI } from '~/types/role'
 import { UserI } from '~/types/user'
+import { FormActionE } from '~/types/form'
 
 definePageMeta({
   layout: 'admin',
@@ -152,7 +153,7 @@ const itemsPerPage = ref(10)
 const page = ref(1)
 const selectedRoles = ref<RoleI[]>([])
 const roleFormDialogVisible = ref(false)
-const roleFormDialogAction = ref<string | undefined>(undefined)
+const roleFormDialogAction = ref<FormActionE | undefined>(undefined)
 const confirmDialogVisible = ref(false)
 const deletionInLoading = ref(false)
 const rolePermissionsDialogVisible = ref(false)
@@ -188,12 +189,12 @@ const headers = [
 fetchRoles()
 
 function onEditRole () {
-  roleFormDialogAction.value = 'update'
+  roleFormDialogAction.value = FormActionE.UPDATE
   roleFormDialogVisible.value = true
 }
 
 function onAddRole () {
-  roleFormDialogAction.value = 'create'
+  roleFormDialogAction.value = FormActionE.CREATE
   roleFormDialogVisible.value = true
 }
 

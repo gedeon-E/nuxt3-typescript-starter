@@ -26,6 +26,9 @@ import { useRoleStore } from '@/stores/role'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { UserI } from '~/types/user'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PropType } from 'vue'
+import { FormActionE } from '~/types/form'
 
 const snackbarStore = useSnackbarStore()
 const roleStore = useRoleStore()
@@ -34,7 +37,7 @@ const { loading: roleLoading, roles } = storeToRefs(roleStore)
 
 const props = defineProps({
   modelValue: Boolean,
-  action: { type: String, default: '' },
+  action: { type: String as PropType<FormActionE>, default: '' },
   entity: { type: Object as PropType<UserI>, default: () => ({}) }
 })
 const emit = defineEmits(['update:modelValue', 'created', 'updated'])
@@ -46,7 +49,7 @@ const { updateUser, storeUser } = userStore
 const form = ref<typeof Form>()
 const actionLoading = ref(false)
 
-const dialogTitle = computed(() => (props.action === 'create' ? 'Création d\'un utilisateur' : 'Modifier l\' utilisateur'))
+const dialogTitle = computed(() => (props.action === FormActionE.CREATE ? 'Création d\'un utilisateur' : 'Modifier l\' utilisateur'))
 const dialog = computed({
   get () {
     return props.modelValue
@@ -56,7 +59,7 @@ const dialog = computed({
   }
 })
 const initialValues = computed(() => {
-  if (props.action === 'update') {
+  if (props.action === FormActionE.UPDATE) {
     return props.entity || {}
   }
   return {}
@@ -64,6 +67,13 @@ const initialValues = computed(() => {
 
 const fields = computed(() => [
   { name: 'email', placeholder: 'Veuillez entre l\' email', label: 'Email', type: 'text' },
+  {
+    name: 'password',
+    placeholder: 'Veuillez entre un mot de passe',
+    label: 'Mot de passe',
+    type: 'password',
+    updateMode: props.action === FormActionE.UPDATE
+  },
   {
     name: 'roles',
     placeholder: 'Veuillez sélectionner les roles',
@@ -74,12 +84,15 @@ const fields = computed(() => [
   }
 ])
 
-const formSchema = object({
+const formSchema = computed(() => object({
   email: string()
     .max(255)
     .required('Veuillez renseigner l\'e-mail')
-    .email('Veuillez renseigner un email valide')
-})
+    .email('Veuillez renseigner un email valide'),
+  password: props.action === FormActionE.CREATE
+    ? string().required('Veuillez renseigner le mot de passe').max(255)
+    : string().max(255).nullable()
+}))
 
 async function onSubmit () {
   if (form.value) {
@@ -90,7 +103,15 @@ async function onSubmit () {
         await storeUser(form.value.getValues())
         emit('created')
       } else if (props.action === 'update') {
-        await updateUser(form.value.getValues())
+        const payload = form.value.getValues()
+        payload.roles = payload.roles.map((role: any) => {
+          if (typeof role === 'object') {
+            return role.id
+          }
+          return role
+        })
+
+        await updateUser(payload)
         emit('updated')
       }
       actionLoading.value = false

@@ -1,12 +1,11 @@
 <template>
-  <v-text-field
+  <v-textarea
     v-model="value"
     v-bind="field"
     :value="modelValue"
-    :placeholder="placeholder || label"
+    :placeholder="placeholder"
     :label="label"
     :error-messages="errorMessages"
-    :type="type"
     :disabled="disabled"
     :readonly="readOnly"
     :append-inner-icon="appendInnerIcon"
@@ -15,7 +14,6 @@
     :counter="counter"
     :density="density"
     variant="solo-filled"
-    rounded
     flat
   />
 </template>

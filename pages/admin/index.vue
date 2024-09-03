@@ -1,6 +1,6 @@
 <template>
-  <div>
-    ADMINISTRATION
+  <div class="page-container">
+    BIENVENU DANS VOTRE ESPACE ADMIN
   </div>
 </template>
 
