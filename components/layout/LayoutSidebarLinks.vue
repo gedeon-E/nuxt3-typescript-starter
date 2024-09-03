@@ -1,7 +1,10 @@
 <template>
   <template v-for="menuItem in groupedMenuItems" :key="menuItem.text">
     <div
-      v-if="userHasOneOfPermissions(menuItem.items?.flatMap(item => item?.permissions || []))"
+      v-if="userHasOneOfPermissions(
+        currentUser,
+        menuItem.items?.flatMap(item => item?.permissions || [])
+      )"
     >
       <small class="ml-3">{{ menuItem.text }}</small>
       <v-card density="compact" class="mt-1 mb-3" rounded="xl" elevation="0">
@@ -11,7 +14,11 @@
               <template
                 v-if="
                   userHasOneOfPermissions(
-                    item.subItems?.flatMap(subItem => subItem?.permissions || []) || []
+                    currentUser,
+                    [
+                      ...item.subItems?.flatMap(subItem => subItem?.permissions || []) || [],
+                      ...item.permissions || []
+                    ]
                   )"
               >
                 <v-list-group :value="index">
@@ -40,7 +47,7 @@
                       :key="subItem.text"
                     >
                       <v-list-item
-                        v-if="userHasOneOfPermissions(subItem?.permissions || [])"
+                        v-if="userHasOneOfPermissions(currentUser, subItem?.permissions || [])"
                         :to="subItem.to"
                         append-icon="mdi-chevron-right"
                         color="primary"
@@ -87,9 +94,13 @@
 </template>
 
 <script lang="ts" setup>
-import { userHasOneOfPermissions } from '@/utilities/auth.util'
+import { PERMISSIONS, userHasOneOfPermissions } from '@/utilities/auth.util'
+import { UserI } from '~/types/user'
 
 const { signOut } = useAuth()
+const { data: currentUserData } = useAuth()
+
+const currentUser = currentUserData.value as UserI
 
 const groupedMenuItems: Array<{
   text: string,
@@ -122,13 +133,13 @@ const groupedMenuItems: Array<{
         text: 'Utilisateurs',
         icon: 'mdi-account-group',
         to: '/admin/users',
-        permissions: ['USER:ADD']
+        permissions: [PERMISSIONS.USER.READ]
       },
       {
         text: 'Roles',
         icon: 'mdi-security',
         to: '/admin/roles',
-        permissions: ['ROLE:ADD']
+        permissions: [PERMISSIONS.ROLE.READ]
       }
     ]
   }
