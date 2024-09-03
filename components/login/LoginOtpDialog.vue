@@ -64,7 +64,8 @@ const snackbarStore = useSnackbarStore()
 
 const props = defineProps({
   modelValue: Boolean,
-  email: { type: String, default: '' }
+  email: { type: String, default: '' },
+  token: { type: String, default: '' }
 })
 const emit = defineEmits(['update:modelValue'])
 
@@ -89,7 +90,8 @@ const dialog = computed({
 function onCheckOTP () {
   signIn({
     email: props.email,
-    otp: otpFieldValue.value
+    otp: otpFieldValue.value,
+    token: props.token
   }, { callbackUrl: '/admin' })
     .then(() => {
       showSuccessSnackbar('Connexion effectuée avec succès')
