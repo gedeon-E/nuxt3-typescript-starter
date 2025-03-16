@@ -99,12 +99,12 @@ async function onSubmit () {
     const { valid } = await form.value.validate()
     if (valid) {
       actionLoading.value = true
-      if (props.action === 'create') {
+      if (props.action === FormActionE.CREATE) {
         await storeUser(form.value.getValues())
         emit('created')
-      } else if (props.action === 'update') {
+      } else if (props.action === FormActionE.UPDATE) {
         const payload = form.value.getValues()
-        payload.roles = payload.roles.map((role: any) => {
+        payload.roles = payload.roles.map((role: RoleI || number) => {
           if (typeof role === 'object') {
             return role.id
           }
