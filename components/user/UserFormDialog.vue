@@ -26,6 +26,7 @@ import { useRoleStore } from '@/stores/role'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { UserI } from '~/types/user'
+import { RoleI } from '~/types/role'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PropType } from 'vue'
 import { FormActionE } from '~/types/form'
@@ -104,7 +105,7 @@ async function onSubmit () {
         emit('created')
       } else if (props.action === FormActionE.UPDATE) {
         const payload = form.value.getValues()
-        payload.roles = payload.roles.map((role: RoleI || number) => {
+        payload.roles = payload.roles.map((role: RoleI | number) => {
           if (typeof role === 'object') {
             return role.id
           }
