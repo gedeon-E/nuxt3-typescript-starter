@@ -30,8 +30,8 @@ export const useFetchApi = (requestUrl: string, opts: any): Promise<{ data: any,
         ) {
           let message = 'Les données soumises sont incorrectes. '
           if (response.error.value.data && response.error.value.data.msg) {
-            if (typeof response.error.value.data.msg === 'string') {
-              message += response.error.value.data.msg
+            if (typeof response.error.value.data.msg === 'string' || typeof response.error.value.data.message === 'string') {
+              message += response.error.value.data.msg || response.error.value.data.message
             } else if (typeof response.error.value.data.msg === 'object' && response.error.value.data.msg.length > 0) {
               if (response.error.value.data.msg[0].msg) {
                 message += response.error.value.data.msg[0].msg
