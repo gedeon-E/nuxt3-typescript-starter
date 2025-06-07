@@ -29,6 +29,7 @@
                       rounded="xl"
                       :to="item.to"
                       exact
+                      @click.prevent="item.to ? navigateTo(item.to) : null"
                     >
                       <template #prepend>
                         <div class="sidebar-link-icon">
@@ -53,6 +54,7 @@
                         color="primary"
                         rounded="xl"
                         exact
+                        @click.prevent="subItem.to ? navigateTo(subItem.to) : null"
                       >
                         <v-tooltip :text="subItem.text">
                           <template #activator="{ props }">

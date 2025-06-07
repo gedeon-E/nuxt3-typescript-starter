@@ -3,8 +3,8 @@
     v-model="dialog"
     width="400"
     title="En attente de confirmation"
-    action-text="Supprimer"
-    action-icon="mdi-delete"
+    :action-text="actionText"
+    :action-icon="actionIcon"
     @submit="onConfirm()"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->
@@ -15,7 +15,9 @@
 <script lang="ts" setup>
 const props = defineProps({
   modelValue: Boolean,
-  text: { type: String, default: '' }
+  text: { type: String, default: '' },
+  actionText: { type: String, default: 'Valider' },
+  actionIcon: { type: String, default: 'mdi-check' }
 })
 
 const emit = defineEmits(['update:modelValue', 'confirm'])

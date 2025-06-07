@@ -115,6 +115,8 @@
     <CommonConfirmDialog
       v-model="confirmDialogVisible"
       :text="textConfirmDeletion"
+      action-text="Supprimer"
+      action-icon="mdi-delete"
       @confirm="onConfirmDeletion"
     />
   </div>

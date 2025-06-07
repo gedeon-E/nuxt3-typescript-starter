@@ -32,7 +32,10 @@ export const dynamicFieldSelectProps = {
   itemValue: { type: String, default: 'id' },
   itemSubtitle: { type: String, default: null },
   selectFilter: { type: Boolean, default: false },
-  items: { type: Array, default: () => ([]) }
+  items: { type: Array, default: () => ([]) },
+  chips: { type: Boolean, default: true },
+  loading: { type: Boolean, default: false },
+  returnObject: { type: Boolean, default: false }
 }
 
 export const dynamicFieldAutocompleteProps = {

@@ -12,8 +12,10 @@
     :item-value="itemValue"
     :readonly="readOnly"
     :density="density"
+    :loading="loading"
     variant="solo-filled"
-    chips
+    :chips="chips"
+    :return-object="returnObject"
     rounded
     flat
   >
@@ -36,7 +38,7 @@
 import { dynamicFieldSelectProps } from '@/types/dynamicField'
 
 const props = defineProps({
-  modelValue: { type: [String, Array, Number, null], required: true, default: null },
+  modelValue: { type: [String, Array, Number, null, Object], required: true, default: null },
   field: { type: Object, required: true },
   ...dynamicFieldSelectProps
 })
