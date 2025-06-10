@@ -29,7 +29,10 @@ export const useFetchApi = (requestUrl: string, opts: any): Promise<{ data: any,
           response.error.value.statusCode === 422
         ) {
           let message = 'Les données soumises sont incorrectes. '
-          if (response.error.value.data && response.error.value.data.msg) {
+          if (
+            response.error.value.data &&
+            (response.error.value.data.msg || response.error.value.data.message)
+          ) {
             if (typeof response.error.value.data.msg === 'string' || typeof response.error.value.data.message === 'string') {
               message += response.error.value.data.msg || response.error.value.data.message
             } else if (typeof response.error.value.data.msg === 'object' && response.error.value.data.msg.length > 0) {
