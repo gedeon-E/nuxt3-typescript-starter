@@ -11,12 +11,19 @@
     "lint": "eslint --ext \".ts,.vue\" --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.11.2",
     "@sidebase/nuxt-auth": "1.0.1",
     "@vee-validate/nuxt": "^4.15.1",
-    "next-auth": "~4.21.1",
+    "@vee-validate/yup": "^4.15.1",
+    "@vuepic/vue-datepicker": "^11.0.2",
+    "date-fns": "^4.1.0",
     "nuxt": "^4.0.3",
+    "pinia": "^3.0.3",
+    "vee-validate": "^4.15.1",
     "vue": "^3.5.20",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vuetify-nuxt-module": "0.18.7",
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/css": "^0.10.0",
@@ -24,6 +31,7 @@
     "@eslint/json": "^0.13.1",
     "@eslint/markdown": "^7.2.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@types/node": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
     "eslint": "8.57.1",

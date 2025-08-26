@@ -4,8 +4,21 @@ export default defineNuxtConfig({
   ssr: false,
   css: ['~/assets/scss/main.scss'],
   devtools: { enabled: true },
-  modules: ['@vee-validate/nuxt', '@sidebase/nuxt-auth'],
+  modules: [
+    '@vee-validate/nuxt',
+    '@sidebase/nuxt-auth',
+    'vuetify-nuxt-module',
+    '@pinia/nuxt'
+  ],
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.API_BASE_URL,
+      serverBaseURL: process.env.SERVER_BASE_URL
+    }
+  },
   auth: {
+    baseURL: `${process.env.API_BASE_URL}/auth`,
+    globalAppMiddleware: true,
     provider: {
       type: 'local',
       pages: {
@@ -19,9 +32,7 @@ export default defineNuxtConfig({
       token: {
         maxAgeInSeconds: 60 * 60 * 8 // 8 hours
       }
-    },
-    baseURL: `${process.env.API_BASE_URL}/auth`,
-    globalAppMiddleware: true
+    }
   },
   vite: {
     css: {
@@ -32,4 +43,7 @@ export default defineNuxtConfig({
       }
     }
   }
+  // pinia: {
+  //   storesDirs: ['./app/stores/**']
+  // }
 })
