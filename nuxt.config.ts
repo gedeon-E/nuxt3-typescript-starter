@@ -1,42 +1,10 @@
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: '2025-07-15',
   ssr: false,
-  devtools: { enabled: true },
   css: ['~/assets/scss/main.scss'],
-  runtimeConfig: {
-    public: {
-      baseURL: process.env.API_BASE_URL,
-      serverBaseURL: process.env.SERVER_BASE_URL
-    }
-  },
-  modules: [
-    '@nuxtjs/eslint-module',
-    '@vee-validate/nuxt',
-    '@sidebase/nuxt-auth',
-    (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
-      })
-    }
-  ],
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: '@use "@/assets/scss/variables.scss" as *;'
-        }
-      }
-    },
-    vue: {
-      template: {
-        transformAssetUrls
-      }
-    }
-  },
+  devtools: { enabled: true },
+  modules: ['@vee-validate/nuxt', '@sidebase/nuxt-auth'],
   auth: {
     provider: {
       type: 'local',
@@ -55,11 +23,13 @@ export default defineNuxtConfig({
     baseURL: `${process.env.API_BASE_URL}/auth`,
     globalAppMiddleware: true
   },
-  build: {
-    transpile: ['@vuepic/vue-datepicker', 'vuetify']
-  },
-  typescript: {
-    strict: true,
-    typeCheck: true
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/assets/scss/variables.scss" as *;'
+        }
+      }
+    }
   }
 })

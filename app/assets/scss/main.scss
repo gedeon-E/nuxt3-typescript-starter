@@ -1,6 +1,7 @@
-@import "font.scss";
-@import "vuetify-overide.scss";
-@import "mixins.scss";
+@use "font.scss" as *;
+@use "vuetify-overide.scss" as *;
+@use "mixins.scss" as *;
+@use "variables.scss" as *;
 
 * {
   font-family: 'Century Gothic';

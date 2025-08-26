@@ -1,3 +1,5 @@
+@use "variables.scss" as *;
+
 $tooltip-font-size: $text-size;
 
 .v-input--readonly .v-field__input {
