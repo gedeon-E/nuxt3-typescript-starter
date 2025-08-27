@@ -6,3 +6,9 @@ $bg-input: #F5F6FD;
 
 $text-color: rgba(0, 0, 0, 0.87);
 $text-size: 13px;
+
+$body-padding: 10px;
+$sidebar-width: 300px;
+$main-content-left-offset: $sidebar-width + $body-padding;
+
+$header-height: 100px;

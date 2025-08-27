@@ -50,7 +50,6 @@
           select-strategy="single"
           show-select
           return-object
-          show-expand
           @update:options="loadUsers"
         >
           <template #[`item.index`]="{ index }">

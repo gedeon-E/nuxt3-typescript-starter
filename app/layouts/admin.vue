@@ -1,9 +1,15 @@
 <template>
   <div>
     <div class="admin-layout-container">
-      <LayoutSidebar>
+      <LayoutSidebar
+        :show-sidebar="showSidebar"
+        @hide-sidebar="showSidebar = false"
+      >
         <div>
-          <LayoutHeader />
+          <LayoutHeader
+            :is-sidebar-visible="showSidebar"
+            @show-sidebar="showSidebar = true"
+          />
         </div>
         <div>
           <CommonBreadcrumb />
@@ -15,8 +21,13 @@
     </div>
 
     <CommonSnackbar />
+    <CommonAlert />
   </div>
 </template>
+
+<script setup lang="ts">
+const showSidebar = ref(true)
+</script>
 
 <style lang="scss">
   .admin-layout-container {

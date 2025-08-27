@@ -40,16 +40,30 @@ function isCurrentRoute (href: string | undefined): boolean {
 }
 </script>
 
-<style lang="scss">
-.wrapper-link-icon {
-  margin-right: 20px;
-  border: 1px solid #eee;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  background-color: #eee;
+<style lang="scss" scoped>
+.common-breadcrumb-container {
+  position: sticky;
+  top: $header-height;
+  z-index: 3;
+  background-color: $bg-card;
+
+  .wrapper-link-icon {
+    margin-right: 20px;
+    border: 1px solid #eee;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #eee;
+  }
+
+  .breadcrumb-item a {
+    font-size: 14px;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 </style>
