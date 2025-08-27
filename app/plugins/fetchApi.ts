@@ -1,12 +1,13 @@
-export default defineNuxtPlugin((NuxtApp) => {
+export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
   const { token } = useAuth()
 
   const baseURL = config.public.apiBaseURL
 
   const headers: HeadersInit = {}
+
   if (token.value) {
-    headers.Authorization = `Bearer ${token.value}`
+    headers.Authorization = `${token.value}`
   }
 
   const fetchApi = $fetch.create({

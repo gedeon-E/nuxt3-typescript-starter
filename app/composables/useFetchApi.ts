@@ -17,9 +17,8 @@ export const useFetchApi = <DataType = unknown>(
   return useFetch<DataType>(requestUrl, {
     baseURL: config.public.apiBaseURL,
     ...options,
+    lazy: true,
     onResponseError: ({ response }) => {
-      console.log(response)
-
       HttpErrorHandler.handleFetchError(response)
     }
   })

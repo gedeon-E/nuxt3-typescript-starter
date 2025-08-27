@@ -42,7 +42,7 @@
           v-model:items-per-page="itemsPerPage"
           v-model:page="page"
           :items-length="totalItems"
-          :headers="(headers as any)"
+          :headers="headers"
           :items="users"
           :loading="usersLoading"
           items-per-page-text="Items par page"
@@ -50,6 +50,7 @@
           select-strategy="single"
           show-select
           return-object
+          show-expand
           @update:options="loadUsers"
         >
           <template #[`item.index`]="{ index }">
@@ -131,7 +132,7 @@ const selectedUser = computed(
 const headers = [
   {
     title: '#',
-    align: 'start',
+    align: 'start' as const,
     sortable: false,
     key: 'index'
   },
@@ -169,8 +170,6 @@ async function onConfirmDeletion () {
 }
 
 function refreshUsers () {
-  console.log('refreshUsers')
-
   loadUsers({
     page: page.value,
     itemsPerPage: itemsPerPage.value
@@ -178,13 +177,10 @@ function refreshUsers () {
 }
 
 async function loadUsers (payload: { page: number, itemsPerPage: number }) {
-  console.log('loadUsers', payload)
-
   usersLoading.value = true
   const { data, total } = await fetchUsersWithPagination(
     { page: payload.page, limit: payload.itemsPerPage }
   )
-  console.log('loadUsers', { data, total })
 
   users.value = data
   totalItems.value = total

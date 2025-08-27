@@ -21,9 +21,9 @@ const HttpErrorHandler = {
         errorResponse.status === 409 ||
         errorResponse.status === 422
     ) {
-      handleBadRequest(errorResponse)
+      HttpErrorHandler.handleBadRequest(errorResponse)
     } else if (errorResponse.status !== 401) {
-      handleServerError(errorResponse)
+      HttpErrorHandler.handleServerError(errorResponse)
     } else if (errorResponse.status === 401 && requestUrl !== '/auth/signin') {
       showErrorSnackbar('Votre session a expirée, veuillez vous reconnecter')
       getSession({ required: true, callbackUrl: '/login' }).then(() => {

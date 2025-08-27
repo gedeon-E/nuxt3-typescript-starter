@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', () => {
   const { $fetchApi } = useNuxtApp()
 
   function storeUser (user: UserI) {
-    return new Promise((resolve) => {
+    return new Promise<UserI>((resolve) => {
       $fetchApi<UserI>('/users', {
         method: 'post',
         body: user
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function fetchUsersWithPagination ({ page, limit }: { page: number, limit: number }) {
-    return useFetchApi<HttpPaginationResponseI<UserI[]>>('/users', {
+    return $fetchApi<HttpPaginationResponseI<UserI[]>>('/users', {
       method: 'get',
       params: {
         page,
@@ -32,30 +32,24 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function updateUser (payload: UserI) {
-    return new Promise((resolve) => {
-      useFetchApi(`/users/${payload.id}`, {
+    return new Promise<UserI>((resolve) => {
+      $fetchApi<UserI>(`/users/${payload.id}`, {
         method: 'put',
         body: payload
-      }).then(({ status, data }) => {
-        if (status.value === 'success') {
-          showSuccessSnackbar('Utilisateur modifié avec succès')
-
-          resolve(data.value)
-        }
+      }).then((data) => {
+        showSuccessSnackbar('Utilisateur modifié avec succès')
+        resolve(data)
       })
     })
   }
 
   function deleteUser (userId: number) {
-    return new Promise((resolve) => {
-      useFetchApi(`/users/${userId}`, {
+    return new Promise<void>((resolve) => {
+      $fetchApi(`/users/${userId}`, {
         method: 'delete'
-      }).then(({ status }) => {
-        if (status.value === 'success') {
-          showSuccessSnackbar('Utilisateur supprimé avec succès')
-
-          resolve(null)
-        }
+      }).then(() => {
+        showSuccessSnackbar('Utilisateur supprimé avec succès')
+        resolve()
       })
     })
   }

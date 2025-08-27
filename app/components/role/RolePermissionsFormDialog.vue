@@ -32,7 +32,6 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
 import { useRoleStore } from '@/stores/role'
 import { useRessourceStore } from '@/stores/ressource'
 import type { PermissionI } from '~/types/permission'
@@ -47,8 +46,10 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 const { updatePermissions } = roleStore
-const { ressources } = storeToRefs(ressourceStore)
 const { fetchRessources } = ressourceStore
+
+const { data: ressourcesData } = await fetchRessources()
+const ressources = computed(() => ressourcesData.value || [])
 
 const actionLoading = ref(false)
 const permissions = ref<PermissionI[]>(props.role?.permissions ?? [])

@@ -42,8 +42,8 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  vuetify: {
+    vuetifyOptions: './config/vuetify.config.ts'
   }
-  // pinia: {
-  //   storesDirs: ['./app/stores/**']
-  // }
 })

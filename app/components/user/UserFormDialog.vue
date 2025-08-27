@@ -21,7 +21,6 @@
 <script lang="ts" setup>
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
-import { storeToRefs } from 'pinia'
 import type { PropType } from 'vue'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useRoleStore } from '@/stores/role'
@@ -34,7 +33,6 @@ import { FormActionE } from '~/types/form'
 const snackbarStore = useSnackbarStore()
 const roleStore = useRoleStore()
 const userStore = useUserStore()
-const { loading: roleLoading, roles } = storeToRefs(roleStore)
 
 const props = defineProps({
   modelValue: Boolean,
@@ -46,6 +44,9 @@ const emit = defineEmits(['update:modelValue', 'created', 'updated'])
 const { showErrorSnackbar } = snackbarStore
 const { fetchRoles } = roleStore
 const { updateUser, storeUser } = userStore
+
+const { data: roles, status: rolesStatus } = await fetchRoles()
+const roleLoading = computed(() => rolesStatus.value === 'pending')
 
 const form = ref<typeof Form>()
 const actionLoading = ref(false)
@@ -67,6 +68,8 @@ const initialValues = computed(() => {
 })
 
 const fields = computed(() => [
+  { name: 'firstName', placeholder: 'Veuillez entre le prénom', label: 'Prénom', type: 'text' },
+  { name: 'lastName', placeholder: 'Veuillez entre le nom', label: 'Nom', type: 'text' },
   { name: 'email', placeholder: 'Veuillez entre l\' email', label: 'Email', type: 'text' },
   {
     name: 'password',
@@ -123,6 +126,4 @@ async function onSubmit () {
     }
   }
 }
-
-fetchRoles()
 </script>
