@@ -99,7 +99,10 @@ function onCheckOTP () {
     .catch((error) => {
       if (error.response && error.response.status === 401) {
         // eslint-disable-next-line no-underscore-dangle
-        showErrorSnackbar(error.response._data?.msg || 'Otp incorrects')
+        const message = error.response._data?.msg || error.response._data?.message
+        showErrorSnackbar(message || 'Otp incorrects')
+      } else {
+        showErrorSnackbar('Une erreur est survenue, connexion impossible')
       }
     })
 }

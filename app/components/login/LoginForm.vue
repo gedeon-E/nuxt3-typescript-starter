@@ -1,6 +1,6 @@
 <template>
   <div class="login-form-container">
-    <h1>UBA-RDC E-TAX APP</h1>
+    <h1>{{ config.title }}</h1>
     <h2 class="text-primary">
       AUTHENTIFICATION
     </h2>
@@ -59,7 +59,12 @@
     </Form>
   </div>
 
-  <LoginOtpDialog v-model="showOtpForm" :email="email" :token="token" />
+  <LoginOtpDialog
+    v-if="config.loginWithOTP"
+    v-model="showOtpForm"
+    :email="email"
+    :token="tokenForOTPVerification"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -75,13 +80,15 @@ interface FormValueI {
 
 const authStore = useAuthStore()
 const snackbarStore = useSnackbarStore()
+const config = useAppConfig()
+const { signIn } = useAuth()
 
 const passwordVisible = ref(false)
 const loading = ref(false)
 const showOtpForm = ref(false)
 const email = ref()
-const token = ref()
-const { showErrorSnackbar } = snackbarStore
+const tokenForOTPVerification = ref()
+const { showErrorSnackbar, showSuccessSnackbar } = snackbarStore
 
 const loginSchema = object({
   email: string()
@@ -91,17 +98,49 @@ const loginSchema = object({
 })
 
 function onSubmit (values: FormValueI) {
-  authStore.signin(values)
-    .then(({ error, data }) => {
+  if (config.loginWithOTP) {
+    signInWithOtpVerification(values)
+  } else {
+    signInOTPLess(values)
+  }
+}
+
+function signInOTPLess (values: FormValueI) {
+  loading.value = true
+
+  signIn(values, { callbackUrl: '/admin' })
+    .then(() => {
+      showSuccessSnackbar('Connexion effectuée avec succès')
+    })
+    .catch((error) => {
+      if (error.response && error.response.status === 401) {
+        // eslint-disable-next-line no-underscore-dangle
+        const message = error.response._data?.msg || error.response._data?.message
+        showErrorSnackbar(message || 'Otp incorrects')
+      } else {
+        showErrorSnackbar('Une erreur est survenue, connexion impossible')
+      }
+    })
+    .finally(() => {
       loading.value = false
+    })
+}
+
+function signInWithOtpVerification (values: FormValueI) {
+  loading.value = true
+
+  authStore.signInWithOtpVerification(values)
+    .then(({ error, data }) => {
       if (error.value) {
         if (error.value.statusCode === 401) {
           showErrorSnackbar(error.value.data.msg || 'Identifiants incorrects')
         }
       } else {
-        token.value = data.value.token
+        tokenForOTPVerification.value = data.value.token
         showOtpForm.value = true
       }
+    }).finally(() => {
+      loading.value = false
     })
 }
 
