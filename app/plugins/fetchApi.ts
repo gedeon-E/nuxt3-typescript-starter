@@ -4,15 +4,13 @@ export default defineNuxtPlugin(() => {
 
   const baseURL = config.public.apiBaseURL
 
-  const headers: HeadersInit = {}
-
-  if (token.value) {
-    headers.Authorization = `${token.value}`
-  }
-
   const fetchApi = $fetch.create({
     baseURL,
-    headers: { ...headers },
+    onRequest: ({ options }) => {
+      if (token) {
+        options.headers.set('Authorization', token.value as string)
+      }
+    },
     onResponseError: ({ response }) => {
       HttpErrorHandler.handleFetchError(response)
     }

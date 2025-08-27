@@ -41,6 +41,8 @@ const HttpErrorHandler = {
 
     // eslint-disable-next-line no-underscore-dangle
     const errorMessage = errorResponse._data?.message || errorResponse._data?.msg
+    console.log(errorMessage)
+
     if (errorMessage) {
       if (typeof errorMessage === 'string') {
         message += errorMessage

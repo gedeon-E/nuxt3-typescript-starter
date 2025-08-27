@@ -54,10 +54,34 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
+  function lockUser (userId: number) {
+    return new Promise<void>((resolve) => {
+      $fetchApi(`/users/${userId}/lock`, {
+        method: 'put'
+      }).then(() => {
+        showSuccessSnackbar('Utilisateur bloqué avec succès')
+        resolve()
+      })
+    })
+  }
+
+  function unlockUser (userId: number) {
+    return new Promise<void>((resolve) => {
+      $fetchApi(`/users/${userId}/unlock`, {
+        method: 'put'
+      }).then(() => {
+        showSuccessSnackbar('Utilisateur débloqué avec succès')
+        resolve()
+      })
+    })
+  }
+
   return {
     storeUser,
     fetchUsersWithPagination,
     updateUser,
-    deleteUser
+    deleteUser,
+    unlockUser,
+    lockUser
   }
 })

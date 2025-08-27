@@ -75,6 +75,7 @@ import { useAuthStore } from '@/stores/auth'
 
 interface FormValueI {
   email: string;
+  username?: string;
   password: string;
 }
 
@@ -92,8 +93,7 @@ const { showErrorSnackbar, showSuccessSnackbar } = snackbarStore
 
 const loginSchema = object({
   email: string()
-    .email('Veuillez renseigner un email valide')
-    .required('Veuillez renseigner un email'),
+    .required('Veuillez renseigner un email ou un nom d\'utilisateur'),
   password: string().required('Veuillez renseigner un mot de passe')
 })
 
@@ -108,12 +108,14 @@ function onSubmit (values: FormValueI) {
 function signInOTPLess (values: FormValueI) {
   loading.value = true
 
-  signIn(values, { callbackUrl: '/admin' })
+  signIn({ ...values, username: values.email }, { callbackUrl: '/admin' })
     .then(() => {
       showSuccessSnackbar('Connexion effectuée avec succès')
     })
     .catch((error) => {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 429) {
+        showErrorSnackbar('Trop de tentatives de connexion, veuillez réessayer plus tard')
+      } else if (error.response && error.response.status.toString().startsWith('4')) {
         // eslint-disable-next-line no-underscore-dangle
         const message = error.response._data?.msg || error.response._data?.message
         showErrorSnackbar(message || 'Identifiants incorrect')
@@ -129,7 +131,7 @@ function signInOTPLess (values: FormValueI) {
 function signInWithOtpVerification (values: FormValueI) {
   loading.value = true
 
-  authStore.signInWithOtpVerification(values)
+  authStore.signInWithOtpVerification({ ...values, username: values.email })
     .then((data) => {
       tokenForOTPVerification.value = data.token
       showOtpForm.value = true

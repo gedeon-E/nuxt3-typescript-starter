@@ -1,25 +1,15 @@
+import type { UseFetchOptions } from 'nuxt/app'
+
 // eslint-disable-next-line import/prefer-default-export
-export const useFetchApi = <DataType = unknown>(
-  requestUrl: string,
-  opts: Record<string, unknown>
+export const useFetchApi = <DataType>(
+  url: string | (() => string),
+  options?: UseFetchOptions<DataType>
 ) => {
-  const config = useRuntimeConfig()
-  const { token } = useAuth()
+  const customFetch = useNuxtApp().$fetchApi as typeof $fetch
 
-  const options = { ...opts }
-
-  if (token) {
-    options.headers = {
-      Authorization: `${token.value}`
-    }
-  }
-
-  return useFetch<DataType>(requestUrl, {
-    baseURL: config.public.apiBaseURL,
+  return useFetch(url, {
     ...options,
     lazy: true,
-    onResponseError: ({ response }) => {
-      HttpErrorHandler.handleFetchError(response)
-    }
+    $fetch: customFetch
   })
 }

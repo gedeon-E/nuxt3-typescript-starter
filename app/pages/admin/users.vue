@@ -33,6 +33,22 @@
       >
         <span class="text-none">Supprimer</span>
       </v-btn>
+
+      <v-btn
+        v-if="userHasOneOfPermissions(currentUser, [PERMISSIONS.USER.UPDATE])"
+        :disabled="!selectedUser ||
+          lockInLoading ||
+          (selectedUser && selectedUser.id === currentUser.id)
+        "
+        :loading="lockInLoading"
+        :prepend-icon="selectedUser?.locked ? 'mdi-lock-open' : 'mdi-lock'"
+        color="white"
+        rounded="xl"
+        class="my-1 ml-2"
+        @click="onToggleLockUser()"
+      >
+        <span class="text-none">{{ selectedUser?.locked ? 'Débloquer' : 'Bloquer' }}</span>
+      </v-btn>
     </div>
 
     <v-card rounded="xl" elevation="0">
@@ -55,6 +71,17 @@
           <template #[`item.index`]="{ index }">
             {{ (itemsPerPage * (page - 1)) + index + 1 }}
           </template>
+
+          <template #[`item.locked`]="{ item }">
+            <v-chip
+              :color="item.locked ? 'red' : 'green'"
+              size="small"
+              variant="elevated"
+            >
+              {{ item.locked ? 'Bloqué' : 'Actif' }}
+            </v-chip>
+          </template>
+
           <template #[`item.roles`]="{ item }">
             <v-chip-group>
               <v-chip v-for="role in item.roles" :key="role.id">
@@ -79,6 +106,14 @@
       action-text="Supprimer"
       action-icon="mdi-delete"
       @confirm="onConfirmDeletion"
+    />
+
+    <CommonConfirmDialog
+      v-model="confirmLockDialogVisible"
+      :text="textConfirmLock"
+      :action-text="selectedUser?.locked ? 'Débloquer' : 'Bloquer'"
+      :action-icon="selectedUser?.locked ? 'mdi-lock-open' : 'mdi-lock'"
+      @confirm="onConfirmToggleLock"
     />
   </div>
 </template>
@@ -107,7 +142,7 @@ const { data: currentUserData } = useAuth()
 const currentUser = currentUserData.value as UserI
 
 const userStore = useUserStore()
-const { fetchUsersWithPagination, deleteUser } = userStore
+const { fetchUsersWithPagination, deleteUser, unlockUser, lockUser } = userStore
 
 const itemsPerPage = ref(10)
 const page = ref(1)
@@ -119,10 +154,17 @@ const userFormDialogAction = ref<FormActionE | undefined>(undefined)
 const confirmDialogVisible = ref(false)
 const deletionInLoading = ref(false)
 const usersLoading = ref(false)
+const confirmLockDialogVisible = ref(false)
+const lockInLoading = ref(false)
 
 const textConfirmDeletion = computed(
   () => `Voulez-vous vraiment supprimer l'utilisateur <strong>"${selectedUser.value?.email}"</strong> ?`
 )
+
+const textConfirmLock = computed(() => {
+  const action = selectedUser.value?.locked ? 'débloquer' : 'bloquer'
+  return `Voulez-vous vraiment ${action} l'utilisateur <strong>"${selectedUser.value?.email}"</strong> ?`
+})
 
 const selectedUser = computed(
   () => (selectedUsers.value.length > 0 ? selectedUsers.value[0] : null)
@@ -135,6 +177,10 @@ const headers = [
     sortable: false,
     key: 'index'
   },
+  { title: 'Etat', key: 'locked' },
+  { title: 'Nom', key: 'lastName' },
+  { title: 'Prénom', key: 'firstName' },
+  { title: 'Nom d\'utilisateur', key: 'username' },
   {
     title: 'Email',
     key: 'email'
@@ -159,12 +205,29 @@ function onDeleteUser () {
   confirmDialogVisible.value = true
 }
 
+function onToggleLockUser () {
+  confirmLockDialogVisible.value = true
+}
+
 async function onConfirmDeletion () {
   if (selectedUser.value) {
     deletionInLoading.value = true
     await deleteUser(selectedUser.value.id)
     refreshUsers()
     deletionInLoading.value = false
+  }
+}
+
+async function onConfirmToggleLock () {
+  if (selectedUser.value) {
+    lockInLoading.value = true
+    if (selectedUser.value.locked) {
+      await unlockUser(selectedUser.value.id)
+    } else {
+      await lockUser(selectedUser.value.id)
+    }
+    refreshUsers()
+    lockInLoading.value = false
   }
 }
 

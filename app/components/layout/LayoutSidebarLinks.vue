@@ -80,6 +80,20 @@
     <v-card density="compact" class="mt-1 mb-4" rounded="xl" elevation="0">
       <template #text>
         <v-list class="py-0">
+          <v-list-item
+            color="primary"
+            rounded="xl"
+            :to="'/admin/my-account'"
+          >
+            <template #prepend>
+              <div class="sidebar-link-icon">
+                <v-icon icon="mdi-account" />
+              </div>
+            </template>
+
+            <v-list-item-title>Mon compte</v-list-item-title>
+          </v-list-item>
+
           <v-list-item color="primary" rounded="xl" @click="signOut({ callbackUrl: '/login' })">
             <template #prepend>
               <div class="sidebar-link-icon">

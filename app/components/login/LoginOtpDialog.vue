@@ -97,10 +97,12 @@ function onCheckOTP () {
       showSuccessSnackbar('Connexion effectuée avec succès')
     })
     .catch((error) => {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 429) {
+        showErrorSnackbar('Trop de tentatives de connexion, veuillez réessayer plus tard')
+      } else if (error.response && error.response.status.toString().startsWith('4')) {
         // eslint-disable-next-line no-underscore-dangle
         const message = error.response._data?.msg || error.response._data?.message
-        showErrorSnackbar(message || 'Otp incorrect')
+        showErrorSnackbar(message || 'Identifiants incorrect')
       } else {
         showErrorSnackbar('Une erreur est survenue, connexion impossible')
       }

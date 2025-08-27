@@ -70,6 +70,12 @@ const initialValues = computed(() => {
 const fields = computed(() => [
   { name: 'firstName', placeholder: 'Veuillez entre le prénom', label: 'Prénom', type: 'text' },
   { name: 'lastName', placeholder: 'Veuillez entre le nom', label: 'Nom', type: 'text' },
+  {
+    name: 'username',
+    placeholder: 'Veuillez entre le nom d\'utilisateur',
+    label: 'Nom d\'utilisateur',
+    type: 'text'
+  },
   { name: 'email', placeholder: 'Veuillez entre l\' email', label: 'Email', type: 'text' },
   {
     name: 'password',
@@ -93,6 +99,15 @@ const formSchema = computed(() => object({
     .max(255)
     .required('Veuillez renseigner l\'e-mail')
     .email('Veuillez renseigner un email valide'),
+  firstName: string()
+    .max(255)
+    .required('Veuillez renseigner le prénom'),
+  lastName: string()
+    .max(255)
+    .required('Veuillez renseigner le nom'),
+  username: string()
+    .max(255)
+    .nullable(),
   password: props.action === FormActionE.CREATE
     ? string().required('Veuillez renseigner le mot de passe').max(255)
     : string().max(255).nullable()
