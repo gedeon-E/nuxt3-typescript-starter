@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useSnackbarStore } from '@/stores/snackbar'
-import { RoleI } from '../types/role'
+import type { RoleI } from '../types/role'
 
 // eslint-disable-next-line import/prefer-default-export
 export const useRoleStore = defineStore('role', {
@@ -14,7 +14,7 @@ export const useRoleStore = defineStore('role', {
       if (!this.loading && (!this.cached || force)) {
         this.loading = true
 
-        useFetchApi('/roles', {
+        useFetchApi<RoleI[]>('/roles', {
           method: 'get'
         }).then(({ data }) => {
           if (data.value) {

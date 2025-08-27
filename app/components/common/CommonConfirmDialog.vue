@@ -3,8 +3,8 @@
     v-model="dialog"
     width="400"
     title="En attente de confirmation"
-    :action-text="actionText"
-    :action-icon="actionIcon"
+    :primary-action-text="actionText"
+    :primary-action-icon="actionIcon"
     @submit="onConfirm()"
   >
     <!-- eslint-disable-next-line vue/no-v-html -->

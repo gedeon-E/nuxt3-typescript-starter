@@ -5,7 +5,7 @@
     :submit="onSubmit"
     :action-loading="actionLoading"
     width="400"
-    action-text="Confirmer"
+    primary-action-text="Confirmer"
   >
     <Form
       ref="form"
@@ -21,14 +21,14 @@
 <script lang="ts" setup>
 import { object, string } from 'yup'
 import { Form } from 'vee-validate'
+import { storeToRefs } from 'pinia'
+import type { PropType } from 'vue'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useRoleStore } from '@/stores/role'
 import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
-import { UserI } from '~/types/user'
-import { RoleI } from '~/types/role'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { PropType } from 'vue'
+import type { UserI } from '~/types/user'
+import type { RoleI } from '~/types/role'
+
 import { FormActionE } from '~/types/form'
 
 const snackbarStore = useSnackbarStore()

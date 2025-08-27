@@ -1,4 +1,4 @@
-import { PermissionI } from './permission'
+import type { PermissionI } from './permission'
 
 export interface RessourceI {
   id: number;

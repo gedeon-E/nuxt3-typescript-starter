@@ -111,7 +111,7 @@ const { fetchUsersWithPagination, deleteUser } = userStore
 
 const itemsPerPage = ref(10)
 const page = ref(1)
-const selectedUsers = ref([])
+const selectedUsers = ref<UserI[]>([])
 const users = ref<UserI[]>([])
 const totalItems = ref(0)
 const userFormDialogVisible = ref(false)
@@ -124,7 +124,7 @@ const textConfirmDeletion = computed(
   () => `Voulez-vous vraiment supprimer l'utilisateur <strong>"${selectedUser.value?.email}"</strong> ?`
 )
 
-const selectedUser = computed<UserI | null>(
+const selectedUser = computed(
   () => (selectedUsers.value.length > 0 ? selectedUsers.value[0] : null)
 )
 
@@ -169,6 +169,8 @@ async function onConfirmDeletion () {
 }
 
 function refreshUsers () {
+  console.log('refreshUsers')
+
   loadUsers({
     page: page.value,
     itemsPerPage: itemsPerPage.value
@@ -176,10 +178,14 @@ function refreshUsers () {
 }
 
 async function loadUsers (payload: { page: number, itemsPerPage: number }) {
+  console.log('loadUsers', payload)
+
   usersLoading.value = true
   const { data, total } = await fetchUsersWithPagination(
     { page: payload.page, limit: payload.itemsPerPage }
   )
+  console.log('loadUsers', { data, total })
+
   users.value = data
   totalItems.value = total
   usersLoading.value = false

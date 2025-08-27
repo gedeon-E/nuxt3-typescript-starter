@@ -5,7 +5,7 @@
     :submit="onSubmit"
     :action-loading="actionLoading"
     min-width="600"
-    action-text="Valider"
+    primary-action-text="Valider"
   >
     <div v-for="ressource in ressources" :key="ressource.id">
       <p class="text-capitalize">
@@ -16,7 +16,10 @@
           v-for="permission in ressource.permissions"
           :key="permission.id"
           :class="{ active: permissions.find(p => p.id === permission.id) }"
-          :prepend-icon="permissions.find(p => p.id === permission.id) ? 'mdi-check-circle' : null"
+          :prepend-icon="permissions.find(p => p.id === permission.id)
+            ? 'mdi-check-circle'
+            : undefined
+          "
           @click="togglePermission(permission)"
         >
           {{ permission.name }}
@@ -29,11 +32,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useRoleStore } from '@/stores/role'
 import { storeToRefs } from 'pinia'
+import { useRoleStore } from '@/stores/role'
 import { useRessourceStore } from '@/stores/ressource'
-import { PermissionI } from '~/types/permission'
-import { RoleI } from '~/types/role'
+import type { PermissionI } from '~/types/permission'
+import type { RoleI } from '~/types/role'
 
 const roleStore = useRoleStore()
 const ressourceStore = useRessourceStore()

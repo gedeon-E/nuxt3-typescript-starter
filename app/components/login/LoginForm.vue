@@ -116,7 +116,7 @@ function signInOTPLess (values: FormValueI) {
       if (error.response && error.response.status === 401) {
         // eslint-disable-next-line no-underscore-dangle
         const message = error.response._data?.msg || error.response._data?.message
-        showErrorSnackbar(message || 'Otp incorrects')
+        showErrorSnackbar(message || 'Identifiants incorrect')
       } else {
         showErrorSnackbar('Une erreur est survenue, connexion impossible')
       }
@@ -130,16 +130,18 @@ function signInWithOtpVerification (values: FormValueI) {
   loading.value = true
 
   authStore.signInWithOtpVerification(values)
-    .then(({ error, data }) => {
-      if (error.value) {
-        if (error.value.statusCode === 401) {
-          showErrorSnackbar(error.value.data.msg || 'Identifiants incorrects')
-        }
-      } else {
-        tokenForOTPVerification.value = data.value.token
-        showOtpForm.value = true
+    .then((data) => {
+      tokenForOTPVerification.value = data.token
+      showOtpForm.value = true
+    })
+    .catch((error) => {
+      if (error.status === 401) {
+        showErrorSnackbar('Identifiants incorrects')
+      } else if (!error.status) {
+        showErrorSnackbar('Impossible de se connecter au serveur, veuillez vérifier votre connexion internet ou réessayer plus tard')
       }
-    }).finally(() => {
+    })
+    .finally(() => {
       loading.value = false
     })
 }

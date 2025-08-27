@@ -164,7 +164,7 @@ const textConfirmDeletion = computed(
   () => `Voulez-vous vraiment supprimer le role <strong>"${selectedRole.value?.name}"</strong> ?`
 )
 
-const selectedRole = computed<RoleI | null>(
+const selectedRole = computed(
   () => (selectedRoles.value.length > 0 ? selectedRoles.value[0] : null)
 )
 

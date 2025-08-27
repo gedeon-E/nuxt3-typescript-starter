@@ -1,5 +1,5 @@
-import { RessourceI } from './ressource'
-import { PermissionI } from './permission'
+import type { RessourceI } from './ressource'
+import type { PermissionI } from './permission'
 
 export interface RoleI {
   id: number;

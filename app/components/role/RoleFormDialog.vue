@@ -5,7 +5,7 @@
     :submit="onSubmit"
     :action-loading="actionLoading"
     width="400"
-    action-text="Confirmer"
+    primary-action-text="Confirmer"
   >
     <Form
       ref="form"
@@ -23,7 +23,7 @@ import { object, string } from 'yup'
 import { Form } from 'vee-validate'
 import { useSnackbarStore } from '@/stores/snackbar'
 import { useRoleStore } from '@/stores/role'
-import { RoleI } from '~/types/role'
+import type { RoleI } from '~/types/role'
 import { FormActionE } from '~/types/form'
 
 const snackbarStore = useSnackbarStore()

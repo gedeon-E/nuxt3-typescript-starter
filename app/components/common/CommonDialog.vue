@@ -14,6 +14,7 @@
 
       <v-card-actions class="justify-space-between px-6 pb-5">
         <v-btn
+          v-if="!props.noAction"
           rounded
           size="large"
           append-icon="mdi-close"
@@ -22,16 +23,19 @@
         >
           <span class="text-none" style="letter-spacing: 0;">Annuler</span>
         </v-btn>
+
         <v-btn
           :loading="loading"
           :disabled="loading || !canSubmit"
-          :append-icon="actionIcon"
+          :append-icon="primaryActionIcon"
           size="large"
           class="px-5 bg-primary"
           rounded
           @click="handleSubmit()"
         >
-          <span class="text-none" style="letter-spacing: 0;">{{ actionText }}</span>
+          <span class="text-none" style="letter-spacing: 0;">
+            {{ props.noAction && !primaryActionText ? 'OK' : primaryActionText }}
+          </span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -43,11 +47,12 @@ const props = defineProps({
   modelValue: Boolean,
   width: { type: String, default: '600px' },
   title: { type: String, default: '' },
-  actionText: { type: String, default: '' },
-  actionIcon: { type: String, default: 'mdi-check' },
+  primaryActionText: { type: String, default: '' },
+  primaryActionIcon: { type: String, default: 'mdi-check' },
   canSubmit: { type: Boolean, default: true },
   loading: { type: Boolean, default: false },
-  submit: { type: Function, default: () => null }
+  submit: { type: Function, default: () => null },
+  noAction: { type: Boolean, default: false }
 })
 const emit = defineEmits(['update:modelValue', 'cancel', 'submit'])
 
