@@ -1,4 +1,4 @@
 export default defineAppConfig({
-  title: 'Nuxt 3 starter',
-  loginWithOTP: true
+  appName: 'Nuxt 3 starter',
+  loginWithOTP: false
 })

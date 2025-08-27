@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { AdminBreadcrumItemI } from '~/types/breadcrumb'
+import type { AdminBreadcrumItemI } from '~/types/breadcrumb'
 
 // eslint-disable-next-line import/prefer-default-export
 export const useAdminBreadcrumbStore = defineStore('admin-breadcrumb', {
