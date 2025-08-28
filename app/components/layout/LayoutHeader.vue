@@ -11,7 +11,7 @@
               <div class="d-flex align-center">
                 <v-btn
                   class="show-sidebar-btn"
-                  icon="mdi-menu-close"
+                  icon="mdi-menu"
                   @click="emit('show-sidebar')"
                 />
 

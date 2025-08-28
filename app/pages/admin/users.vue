@@ -177,18 +177,12 @@ const headers = [
     sortable: false,
     key: 'index'
   },
-  { title: 'Etat', key: 'locked' },
-  { title: 'Nom', key: 'lastName' },
-  { title: 'Prénom', key: 'firstName' },
-  { title: 'Nom d\'utilisateur', key: 'username' },
-  {
-    title: 'Email',
-    key: 'email'
-  },
-  {
-    title: 'Roles',
-    key: 'roles'
-  }
+  { title: 'Nom', key: 'lastName', sortable: false },
+  { title: 'Prénom', key: 'firstName',  sortable: false },
+  { title: 'Email', key: 'email', fixed: true, sortable: false },
+  { title: 'Nom d\'utilisateur', key: 'username', sortable: false },
+  { title: 'Etat', key: 'locked', sortable: false },
+  { title: 'Roles', key: 'roles', sortable: false }
 ]
 
 function onEditUser () {
