@@ -232,6 +232,13 @@ function refreshUsers () {
   })
 }
 
+function refreshSelectedUser () {
+  if (selectedUser.value) {
+    const updatedUser = users.value.find(u => u.id === selectedUser.value?.id)
+    selectedUsers.value = updatedUser ? [updatedUser] : []
+  }
+}
+
 async function loadUsers (payload: { page: number, itemsPerPage: number }) {
   usersLoading.value = true
   const { data, total } = await fetchUsersWithPagination(
@@ -241,5 +248,6 @@ async function loadUsers (payload: { page: number, itemsPerPage: number }) {
   users.value = data
   totalItems.value = total
   usersLoading.value = false
+  refreshSelectedUser()
 }
 </script>
