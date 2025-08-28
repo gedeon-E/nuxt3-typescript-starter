@@ -178,7 +178,7 @@ const headers = [
     key: 'index'
   },
   { title: 'Nom', key: 'lastName', sortable: false },
-  { title: 'Prénom', key: 'firstName',  sortable: false },
+  { title: 'Prénom', key: 'firstName', sortable: false },
   { title: 'Email', key: 'email', fixed: true, sortable: false },
   { title: 'Nom d\'utilisateur', key: 'username', sortable: false },
   { title: 'Etat', key: 'locked', sortable: false },
