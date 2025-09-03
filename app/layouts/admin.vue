@@ -26,7 +26,13 @@
 </template>
 
 <script setup lang="ts">
+const { isMobile } = useMQ()
+
 const showSidebar = ref(true)
+
+watch(isMobile, (newIsMobile) => {
+  showSidebar.value = !newIsMobile
+})
 </script>
 
 <style lang="scss">

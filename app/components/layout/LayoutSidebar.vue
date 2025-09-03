@@ -46,7 +46,7 @@
             <div class="header-infos-spacer" />
 
             <div class="mt-3">
-              <LayoutSidebarLinks />
+              <LayoutSidebarLinks @hide-sidebar="emit('hide-sidebar')" />
             </div>
           </div>
 

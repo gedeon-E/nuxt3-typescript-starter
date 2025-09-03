@@ -1,11 +1,12 @@
 <template>
   <div class="page-container">
-    <div class="d-flex mb-4 justify-end">
+    <div class="d-flex mb-4 justify-end flex-wrap">
       <v-btn
         v-if="userHasOneOfPermissions(currentUser, [PERMISSIONS.ROLE.CREATE])"
         prepend-icon="mdi-plus"
         color="primary"
         rounded="xl"
+        class="my-1"
         @click="onAddRole()"
       >
         <span class="text-none">Ajouter</span>
@@ -16,7 +17,7 @@
         prepend-icon="mdi-pencil"
         color="white"
         rounded="xl"
-        class="ml-2"
+        class="ml-2 my-1"
         @click="onEditRole()"
       >
         <span class="text-none">Modifier</span>
@@ -28,7 +29,7 @@
         prepend-icon="mdi-delete"
         color="white"
         rounded="xl"
-        class="ml-2"
+        class="ml-2 my-1"
         @click="onDeleteRole()"
       >
         <span class="text-none">Supprimer</span>
@@ -39,7 +40,7 @@
         prepend-icon="mdi-shield-account"
         color="white"
         rounded="xl"
-        class="ml-2"
+        class="ml-2 my-1"
         @click="onUpdatePermissions()"
       >
         <span class="text-none">Mettre à jour les permissions</span>

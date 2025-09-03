@@ -29,7 +29,7 @@
                       rounded="xl"
                       :to="item.to"
                       exact
-                      @click.prevent="item.to ? navigateTo(item.to) : null"
+                      @click.prevent="handleClickOnMenuItem(item)"
                     >
                       <template #prepend>
                         <div class="sidebar-link-icon">
@@ -54,7 +54,7 @@
                         color="primary"
                         rounded="xl"
                         exact
-                        @click.prevent="subItem.to ? navigateTo(subItem.to) : null"
+                        @click.prevent="handleClickOnMenuItem(item)"
                       >
                         <v-tooltip :text="subItem.text">
                           <template #activator="{ props }">
@@ -83,7 +83,7 @@
           <v-list-item
             color="primary"
             rounded="xl"
-            :to="'/admin/my-account'"
+            @click.prevent="handleClickOnMenuItem({ to: '/admin/my-account' })"
           >
             <template #prepend>
               <div class="sidebar-link-icon">
@@ -94,7 +94,13 @@
             <v-list-item-title>Mon compte</v-list-item-title>
           </v-list-item>
 
-          <v-list-item color="primary" rounded="xl" @click="signOut({ callbackUrl: '/login' })">
+          <v-divider class="my-1" />
+
+          <v-list-item
+            color="primary"
+            rounded="xl"
+            @click="signOut({ callbackUrl: '/login' })"
+          >
             <template #prepend>
               <div class="sidebar-link-icon">
                 <v-icon icon="mdi-logout-variant" />
@@ -112,26 +118,18 @@
 <script lang="ts" setup>
 import { PERMISSIONS, userHasOneOfPermissions } from '@/utils/AuthUtil'
 import type { UserI } from '~/types/user'
+import { MenuItemI, MenuSectionI, MenuSubItemI } from '~/types/menu'
 
 const { signOut } = useAuth()
 const { data: currentUserData } = useAuth()
 
 const currentUser = currentUserData.value as UserI
 
-const groupedMenuItems: Array<{
-  text: string,
-  items: Array<{
-    text: string,
-    icon: string,
-    to?: string,
-    permissions?: string[],
-    subItems?: Array<{
-      text: string,
-      to: string,
-      permissions?: string[]
-    }>
-  }>
-}> = [
+const { isMobile } = useMQ()
+
+const emit = defineEmits(['hide-sidebar'])
+
+const groupedMenuItems: Array<MenuSectionI> = [
   {
     text: 'Menu',
     items: [
@@ -160,6 +158,15 @@ const groupedMenuItems: Array<{
     ]
   }
 ]
+
+function handleClickOnMenuItem (item: MenuItemI | MenuSubItemI | { to?: string }) {
+  if (item.to) {
+    navigateTo(item.to)
+    if (isMobile.value) {
+      emit('hide-sidebar')
+    }
+  }
+}
 </script>
 
 <style type="scss">

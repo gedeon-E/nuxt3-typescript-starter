@@ -16,7 +16,9 @@
                 />
 
                 <div class="logo" />
-                <h1>{{ config.appName }}</h1>
+                <h1 v-if="!isMobile">
+                  {{ config.appName }}
+                </h1>
               </div>
 
               <div class="d-flex">
@@ -49,7 +51,10 @@
 defineProps({
   isSidebarVisible: { type: Boolean, required: true }
 })
+
 const config = useAppConfig()
+
+const { isMobile } = useMQ()
 
 const emit = defineEmits(['show-sidebar'])
 </script>

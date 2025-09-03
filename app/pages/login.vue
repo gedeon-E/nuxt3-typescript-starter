@@ -51,7 +51,6 @@ definePageMeta({
     background-color: white;
     max-width: 450px;
     width: 100%;
-    height: 490px;
     background-color: white;
     border-radius: 50px;
     margin: 20px;

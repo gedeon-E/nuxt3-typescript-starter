@@ -1,8 +1,8 @@
 <template>
   <div class="page-container">
     <v-row>
-      <v-col cols="12" md="8" lg="8">
-        <v-card class="pa-4" rounded="xl" elevation="1">
+      <v-col cols="12" lg="8">
+        <v-card class="pa-4" rounded="xl" elevation="0">
           <v-card-title class="text-h6 mb-3">
             Informations de compte
           </v-card-title>
@@ -10,8 +10,8 @@
           <v-divider class="mb-4" />
 
           <v-row>
-            <v-col cols="12" md="6">
-              <v-list>
+            <v-col cols="12" md="6" class="pb-0 pb-md-3 pt-0 pt-md-3">
+              <v-list class="py-0">
                 <v-list-item>
                   <template #prepend>
                     <v-icon icon="mdi-account" color="primary" />
@@ -34,8 +34,8 @@
               </v-list>
             </v-col>
 
-            <v-col cols="12" md="6">
-              <v-list>
+            <v-col cols="12" md="6" class="pt-0 pt-md-3">
+              <v-list class="py-0">
                 <v-list-item>
                   <template #prepend>
                     <v-icon icon="mdi-email" color="primary" />
@@ -43,26 +43,26 @@
                   <v-list-item-title>Email</v-list-item-title>
                   <v-list-item-subtitle>{{ currentUser?.email }}</v-list-item-subtitle>
                 </v-list-item>
-              </v-list>
 
-              <v-list-item>
-                <template #prepend>
-                  <v-icon icon="mdi-account-multiple" color="primary" />
-                </template>
-                <v-list-item-title>Rôles</v-list-item-title>
-                <v-list-item-subtitle>
-                  <v-chip
-                    v-for="role in currentUser?.roles"
-                    :key="role.id"
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                    class="mr-1"
-                  >
-                    {{ role.name }}
-                  </v-chip>
-                </v-list-item-subtitle>
-              </v-list-item>
+                <v-list-item>
+                  <template #prepend>
+                    <v-icon icon="mdi-account-multiple" color="primary" />
+                  </template>
+                  <v-list-item-title>Rôles</v-list-item-title>
+                  <v-list-item-subtitle>
+                    <v-chip
+                      v-for="role in currentUser?.roles"
+                      :key="role.id"
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      class="mr-1"
+                    >
+                      {{ role.name }}
+                    </v-chip>
+                  </v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
             </v-col>
           </v-row>
         </v-card>
