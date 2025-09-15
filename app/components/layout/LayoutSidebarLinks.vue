@@ -118,7 +118,7 @@
 <script lang="ts" setup>
 import { PERMISSIONS, userHasOneOfPermissions } from '@/utils/AuthUtil'
 import type { UserI } from '~/types/user'
-import { MenuItemI, MenuSectionI, MenuSubItemI } from '~/types/menu'
+import type { MenuItemI, MenuSectionI, MenuSubItemI } from '~/types/menu'
 
 const { signOut } = useAuth()
 const { data: currentUserData } = useAuth()
