@@ -84,4 +84,4 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 - Create image `docker build . -t nuxt3-ts-strater`
 
-- Run container `docker run -p 3000:80 -d nuxt3-ts-strater`
+- Run container `docker run -p 3000:80 --name=nuxt3-ts-strater -d nuxt3-ts-strater`
