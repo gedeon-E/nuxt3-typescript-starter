@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   ssr: false,
   css: ['~/assets/scss/main.scss'],
   devtools: { enabled: true },
+  devServer: {
+    port: process.env.NODE_SERVER_PORT as unknown as number
+  },
   modules: [
     '@vee-validate/nuxt',
     '@sidebase/nuxt-auth',
@@ -12,12 +15,11 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      apiBaseURL: process.env.API_BASE_URL,
-      serverBaseURL: process.env.SERVER_BASE_URL
+      apiBaseURL: process.env.NUXT_PUBLIC_API_BASE_URL,
+      serverBaseURL: process.env.NUXT_PUBLIC_SERVER_BASE_URL
     }
   },
   auth: {
-    baseURL: `${process.env.API_BASE_URL}/auth`,
     globalAppMiddleware: true,
     provider: {
       type: 'local',
