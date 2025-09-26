@@ -54,7 +54,7 @@
                         color="primary"
                         rounded="xl"
                         exact
-                        @click.prevent="handleClickOnMenuItem(item)"
+                        @click.prevent="handleClickOnMenuItem(subItem)"
                       >
                         <v-tooltip :text="subItem.text">
                           <template #activator="{ props }">
@@ -99,7 +99,9 @@
           <v-list-item
             color="primary"
             rounded="xl"
-            @click="signOut({ callbackUrl: '/login' })"
+            :loading="signoutLoading"
+            :disabled="signoutLoading"
+            @click="handleSignOut"
           >
             <template #prepend>
               <div class="sidebar-link-icon">
@@ -128,6 +130,8 @@ const currentUser = currentUserData.value as UserI
 const { isMobile } = useMQ()
 
 const emit = defineEmits(['hide-sidebar'])
+
+const signoutLoading = ref(false)
 
 const groupedMenuItems: Array<MenuSectionI> = [
   {
@@ -166,6 +170,12 @@ function handleClickOnMenuItem (item: MenuItemI | MenuSubItemI | { to?: string }
       emit('hide-sidebar')
     }
   }
+}
+
+async function handleSignOut () {
+  signoutLoading.value = true
+  await signOut({ callbackUrl: '/login' })
+  signoutLoading.value = false
 }
 </script>
 
