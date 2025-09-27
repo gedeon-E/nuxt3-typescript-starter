@@ -28,7 +28,7 @@
 <script setup lang="ts">
 const { isMobile } = useMQ()
 
-const showSidebar = ref(true)
+const showSidebar = ref(!isMobile.value)
 
 watch(isMobile, (newIsMobile) => {
   showSidebar.value = !newIsMobile

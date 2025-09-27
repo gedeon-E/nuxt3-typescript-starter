@@ -2,14 +2,14 @@ import type { NavigationGuardNext } from 'vue-router'
 import type { UserI } from '~/types/user'
 
 export const shouldHaveOneOfPermissions =
-  ({ permissions } : { next?: NavigationGuardNext, permissions: string[] }) => {
-    const { data } = useAuth()
+({ permissions } : { next?: NavigationGuardNext, permissions: string[] }) => {
+  const { data } = useAuth()
 
-    if (!userHasOneOfPermissions(data.value as UserI, permissions)) {
-      navigateTo('/admin/unauthorized')
-    }
-    return true
+  if (!userHasOneOfPermissions(data.value as UserI, permissions)) {
+    navigateTo('/admin/unauthorized')
   }
+  return true
+}
 
 export const userHasOneOfPermissions = (user: UserI, permissions: string[]): boolean => {
   const permissionsFiltered = permissions?.filter(p => p)

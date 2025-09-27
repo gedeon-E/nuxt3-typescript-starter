@@ -8,22 +8,29 @@
     primary-action-text="Valider"
   >
     <div v-for="ressource in ressources" :key="ressource.id">
-      <p class="text-capitalize">
+      <p class="text-capitalize font-weight-bold">
         {{ ressource.name }}
       </p>
-      <v-chip-group>
-        <v-chip
+      <v-chip-group column>
+        <v-tooltip
           v-for="permission in ressource.permissions"
           :key="permission.id"
-          :class="{ active: permissions.find(p => p.id === permission.id) }"
-          :prepend-icon="permissions.find(p => p.id === permission.id)
-            ? 'mdi-check-circle'
-            : undefined
-          "
-          @click="togglePermission(permission)"
+          :text="permission.description"
         >
-          {{ permission.name }}
-        </v-chip>
+          <template #activator="{ props: permissionTooltipProps }">
+            <v-chip
+              v-bind="permissionTooltipProps"
+              :class="{ active: permissions.find(p => p.id === permission.id) }"
+              :prepend-icon="permissions.find(p => p.id === permission.id)
+                ? 'mdi-check-circle'
+                : undefined
+              "
+              @click="togglePermission(permission)"
+            >
+              {{ permission.name }}
+            </v-chip>
+          </template>
+        </v-tooltip>
       </v-chip-group>
 
       <v-divider class="my-2" />

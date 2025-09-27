@@ -2,6 +2,10 @@
 
 $tooltip-font-size: $text-size;
 
+.v-tooltip > .v-overlay__content {
+  font-size: 12px !important;
+}
+
 .v-input--readonly .v-field__input {
   cursor: not-allowed !important;
 }

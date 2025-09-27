@@ -29,23 +29,40 @@
           <div v-if="item.ressources && !item.ressources.length" class="mt-2 mb-4">
             <v-chip>Aucune permission affectée</v-chip>
           </div>
-          <div
-            v-for="ressource in (item.ressources || [])"
-            :key="ressource.id"
-            class="d-flex align-center"
-          >
-            <v-chip
-              class="mr-2 bg-primary"
-              prepend-icon="mdi-shield-account"
-              color="white"
+
+          <div class="d-flex flex-wrap">
+            <v-card
+              v-for="ressource in (item.ressources || [])"
+              :key="ressource.id"
+              rounded="xl"
+              class="d-flex align-center mr-2 mb-2"
             >
-              {{ ressource.name }}
-            </v-chip>
-            <v-chip-group>
-              <v-chip v-for="permission in ressource.permissions" :key="permission.id">
-                {{ permission.name }}
-              </v-chip>
-            </v-chip-group>
+              <div class="pl-2">
+                <v-chip-group column>
+                  <v-chip
+                    class="bg-primary"
+                    prepend-icon="mdi-shield-account"
+                    color="white"
+                  >
+                    {{ ressource.name }}
+                  </v-chip>
+
+                  <v-tooltip
+                    v-for="permission in ressource.permissions"
+                    :key="permission.id"
+                    :text="permission.description"
+                  >
+                    <template #activator="{ props: permissionTooltipProps }">
+                      <v-chip
+                        v-bind="permissionTooltipProps"
+                      >
+                        {{ permission.name }}
+                      </v-chip>
+                    </template>
+                  </v-tooltip>
+                </v-chip-group>
+              </div>
+            </v-card>
           </div>
         </td>
       </tr>
